@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Writing Now - 2 Minute Journal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .prompt-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .prompt-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .prompt-text {
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .timer-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .timer-display {
+            font-size: 3em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .writing-area {
+            margin-bottom: 25px;
+        }
+
+        .writing-textarea {
+            width: 100%;
+            min-height: 300px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 1.1em;
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .writing-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .writing-textarea::placeholder {
+            color: #adb5bd;
+            font-style: italic;
+        }
+
+        .word-count {
+            text-align: right;
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+        }
+
+        .btn-save:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-new {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-new:hover {
+            background: #138496;
+        }
+
+        .timer-finished {
+            color: #28a745 !important;
+        }
+
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+            
+            .logo {
+                font-size: 2em;
+            }
+            
+            .timer-display {
+                font-size: 2.5em;
+            }
+            
+            .timer-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Start Writing Now</div>
+            <div class="tagline">2-minute micro journaling to unlock your thoughts</div>
+        </div>
+
+        <div class="prompt-section">
+            <div class="prompt-label">Today's Prompt</div>
+            <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
+        </div>
+
+        <div class="timer-section">
+            <div class="timer-display" id="timerDisplay">2:00</div>
+            <div class="timer-controls">
+                <button class="btn btn-primary" id="startBtn" onclick="startTimer()">Start Writing</button>
+                <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="display: none;">Pause</button>
+                <button class="btn btn-secondary" id="resetBtn" onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+
+        <div class="writing-area">
+            <textarea 
+                class="writing-textarea" 
+                id="writingArea" 
+                placeholder="Start writing your thoughts here... Don't worry about grammar or structure, just let your thoughts flow."
+            ></textarea>
+            <div class="word-count" id="wordCount">0 words</div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Save My Entry</button>
+            <button class="btn btn-new btn-secondary" onclick="newPrompt()">New Prompt</button>
+        </div>
+    </div>
+
+    <script>
+        // Journaling prompts
+        const prompts = [
+            "What's one thing that made you smile today?",
+            "Describe a moment when you felt completely at peace.",
+            "What's something you're grateful for right now?",
+            "If you could tell your past self one thing, what would it be?",
+            "What's a small win you had recently?",
+            "Describe your ideal Sunday morning.",
+            "What's something new you learned this week?",
+            "How do you want to feel by the end of today?",
+            "What's a challenge you're facing, and how might you approach it?",
+            "Describe a person who has positively impacted your life.",
+            "What's something you're looking forward to?",
+            "How has your perspective on something changed recently?",
+            "What would you do if you knew you couldn't fail?",
+            "Describe your perfect creative space.",
+            "What's a habit you'd like to develop?",
+            "How do you show kindness to yourself?",
+            "What's something that always makes you laugh?",
+            "Describe a place where you feel most like yourself.",
+            "What's the best advice you've ever received?",
+            "How do you like to celebrate small victories?",
+            "What's something you're curious about right now?",
+            "Describe a time when you felt proud of yourself.",
+            "What does a meaningful day look like to you?",
+            "How do you recharge when you're feeling drained?",
+            "What's something you'd like to let go of?"
+        ];
+
+        // Timer variables
+        let timeLeft = 120; // 2 minutes in seconds
+        let timerInterval = null;
+        let isRunning = false;
+
+        // Initialize the app
+        function initApp() {
+            displayRandomPrompt();
+            updateWordCount();
+            
+            // Add textarea event listener for word count
+            document.getElementById('writingArea').addEventListener('input', updateWordCount);
+        }
+
+        function displayRandomPrompt() {
+            const randomIndex = Math.floor(Math.random() * prompts.length);
+            document.getElementById('currentPrompt').textContent = prompts[randomIndex];
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                document.getElementById('startBtn').style.display = 'none';
+                document.getElementById('pauseBtn').style.display = 'inline-block';
+                
+                // Focus on textarea
+                document.getElementById('writingArea').focus();
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        finishTimer();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            if (isRunning) {
+                isRunning = false;
+                clearInterval(timerInterval);
+                document.getElementById('startBtn').style.display = 'inline-block';
+                document.getElementById('pauseBtn').style.display = 'none';
+            }
+        }
+
+        function resetTimer() {
+            isRunning = false;
+            clearInterval(timerInterval);
+            timeLeft = 120;
+            updateTimerDisplay();
+            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('timerDisplay').classList.remove('timer-finished', 'pulse');
+        }
+
+        function finishTimer() {
+            isRunning = false;
+            clearInterval(timerInterval);
+            timeLeft = 0;
+            updateTimerDisplay();
+            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('timerDisplay').classList.add('timer-finished', 'pulse');
+            
+            // Celebration message
+            setTimeout(() => {
+                alert('Great job! You completed your 2-minute writing session. 🎉');
+            }, 500);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+        }
+
+        function updateWordCount() {
+            const text = document.getElementById('writingArea').value;
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            document.getElementById('wordCount').textContent = `${words.length} words`;
+        }
+
+        function saveEntry() {
+            const prompt = document.getElementById('currentPrompt').textContent;
+            const entry = document.getElementById('writingArea').value;
+            
+            if (entry.trim().length === 0) {
+                alert('Please write something before saving!');
+                return;
+            }
+            
+            // Create formatted text for download
+            const timestamp = new Date().toLocaleString();
+            const formattedEntry = `Start Writing Now - Journal Entry
+Date: ${timestamp}
+Prompt: ${prompt}
+
+Entry:
+${entry}
+
+---
+Keep writing at startwriting.now
+`;
+            
+            // Create and trigger download
+            const blob = new Blob([formattedEntry], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `journal-entry-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Your journal entry has been saved! 📝');
+        }
+
+        function newPrompt() {
+            if (confirm('Get a new prompt? This will clear your current writing.')) {
+                displayRandomPrompt();
+                document.getElementById('writingArea').value = '';
+                updateWordCount();
+                resetTimer();
+            }
+        }
+
+        // Initialize the app when page loads
+        window.addEventListener('load', initApp);
+    </script>
+</body>
+</html>
