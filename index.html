@@ -11,8 +11,10 @@
             box-sizing: border-box;
         }
 
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -37,10 +39,11 @@
         }
 
         .logo {
-            font-size: 2.5em;
-            font-weight: 700;
+            font-size: 1.8em;
+            font-weight: 600;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            letter-spacing: -0.02em;
         }
 
         .tagline {
@@ -58,7 +61,7 @@
         }
 
         .prompt-label {
-            font-weight: 600;
+            font-weight: 500;
             color: #555;
             margin-bottom: 10px;
             font-size: 0.9em;
@@ -83,7 +86,7 @@
             font-weight: 700;
             color: #667eea;
             margin-bottom: 15px;
-            font-family: 'Courier New', monospace;
+            font-family: 'Inter', sans-serif;
         }
 
         .timer-controls {
@@ -133,7 +136,7 @@
             border-radius: 15px;
             padding: 20px;
             font-size: 1.1em;
-            font-family: 'Georgia', serif;
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             resize: vertical;
             transition: border-color 0.3s ease;
@@ -209,7 +212,7 @@
             }
             
             .logo {
-                font-size: 2em;
+                font-size: 1.6em;
             }
             
             .timer-display {
@@ -235,16 +238,14 @@
         </div>
 
         <div class="prompt-section">
-            <div class="prompt-label">Today's Prompt</div>
+            <div class="prompt-label">Random Prompt</div>
             <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
         </div>
 
         <div class="timer-section">
             <div class="timer-display" id="timerDisplay">2:00</div>
             <div class="timer-controls">
-                <button class="btn btn-primary" id="startBtn" onclick="startTimer()">Start Writing</button>
                 <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="display: none;">Pause</button>
-                <button class="btn btn-secondary" id="resetBtn" onclick="resetTimer()">Reset</button>
             </div>
         </div>
 
@@ -303,8 +304,15 @@
             displayRandomPrompt();
             updateWordCount();
             
-            // Add textarea event listener for word count
-            document.getElementById('writingArea').addEventListener('input', updateWordCount);
+            // Add textarea event listener for word count and auto-start timer
+            const textarea = document.getElementById('writingArea');
+            textarea.addEventListener('input', function() {
+                updateWordCount();
+                // Auto-start timer when user starts typing
+                if (!isRunning && textarea.value.trim().length > 0 && timeLeft === 120) {
+                    startTimer();
+                }
+            });
         }
 
         function displayRandomPrompt() {
@@ -315,11 +323,7 @@
         function startTimer() {
             if (!isRunning) {
                 isRunning = true;
-                document.getElementById('startBtn').style.display = 'none';
                 document.getElementById('pauseBtn').style.display = 'inline-block';
-                
-                // Focus on textarea
-                document.getElementById('writingArea').focus();
                 
                 timerInterval = setInterval(() => {
                     timeLeft--;
@@ -336,7 +340,6 @@
             if (isRunning) {
                 isRunning = false;
                 clearInterval(timerInterval);
-                document.getElementById('startBtn').style.display = 'inline-block';
                 document.getElementById('pauseBtn').style.display = 'none';
             }
         }
@@ -356,7 +359,6 @@
             clearInterval(timerInterval);
             timeLeft = 0;
             updateTimerDisplay();
-            document.getElementById('startBtn').style.display = 'inline-block';
             document.getElementById('pauseBtn').style.display = 'none';
             document.getElementById('timerDisplay').classList.add('timer-finished', 'pulse');
             
@@ -416,11 +418,18 @@ Keep writing at startwriting.now
         }
 
         function newPrompt() {
-            if (confirm('Get a new prompt? This will clear your current writing.')) {
+            if (confirm('Get a new prompt? This will clear your current writing and reset the timer.')) {
                 displayRandomPrompt();
                 document.getElementById('writingArea').value = '';
                 updateWordCount();
-                resetTimer();
+                
+                // Reset timer state
+                isRunning = false;
+                clearInterval(timerInterval);
+                timeLeft = 120;
+                updateTimerDisplay();
+                document.getElementById('pauseBtn').style.display = 'none';
+                document.getElementById('timerDisplay').classList.remove('timer-finished', 'pulse');
             }
         }
 
