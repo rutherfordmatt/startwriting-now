@@ -179,21 +179,23 @@
         .timer-section {
             text-align: center;
             margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
         }
 
         .timer-display {
             font-size: 3em;
             font-weight: 700;
             color: #667eea;
-            margin-bottom: 15px;
             font-family: 'Inter', sans-serif;
         }
 
         .timer-controls {
             display: flex;
-            gap: 15px;
+            align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
         }
 
         .btn {
@@ -392,7 +394,7 @@
         <div class="timer-section">
             <div class="timer-display" id="timerDisplay">3:00</div>
             <div class="timer-controls">
-                <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="display: none;">Pause</button>
+                <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="visibility: hidden;">Pause</button>
             </div>
         </div>
 
@@ -506,7 +508,7 @@
         function startTimer() {
             if (!isRunning) {
                 isRunning = true;
-                document.getElementById('pauseBtn').style.display = 'inline-block';
+                document.getElementById('pauseBtn').style.visibility = 'visible';
                 
                 timerInterval = setInterval(() => {
                     timeLeft--;
@@ -523,7 +525,7 @@
             if (isRunning) {
                 isRunning = false;
                 clearInterval(timerInterval);
-                document.getElementById('pauseBtn').style.display = 'none';
+                document.getElementById('pauseBtn').style.visibility = 'hidden';
             }
         }
 
@@ -542,7 +544,7 @@
             clearInterval(timerInterval);
             timeLeft = 0;
             updateTimerDisplay();
-            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('pauseBtn').style.visibility = 'hidden';
             document.getElementById('timerDisplay').classList.add('timer-finished', 'pulse');
             
             // Play chime sound
