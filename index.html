@@ -47,6 +47,7 @@
         .header {
             text-align: left;
             margin-bottom: 30px;
+            position: relative;
         }
 
         .logo {
@@ -56,6 +57,28 @@
             margin-bottom: 5px;
             letter-spacing: -0.02em;
             transition: color 0.3s ease;
+        }
+
+        .about-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .about-link:hover {
+            color: #5a6fd8;
+        }
+
+        .dark-mode .about-link {
+            color: #a0aec0;
+        }
+
+        .dark-mode .about-link:hover {
+            color: #e2e8f0;
         }
 
         .dark-mode .logo {
@@ -232,32 +255,21 @@
             color: #a0aec0;
         }
 
-        .about-link {
-            position: absolute;
-            top: 20px;
-            right: 60px;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9em;
-            transition: color 0.3s ease;
-        }
-
-        .about-link:hover {
-            color: #5a6fd8;
-        }
-
         .dark-mode-toggle {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             background: none;
             border: 2px solid #667eea;
-            border-radius: 25px;
-            padding: 8px 12px;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .dark-mode-toggle:hover {
@@ -343,10 +355,10 @@
 <body>
     <div class="container">
         <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
-        <a href="#about" class="about-link" onclick="showAbout()">About</a>
         
         <div class="header">
             <div class="logo">Start Writing</div>
+            <a href="#about" class="about-link" onclick="showAbout()">About</a>
         </div>
 
         <div class="prompt-section">
