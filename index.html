@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start Writing Now - 2 Minute Journal</title>
+    <title>Start Writing Now - 3 minute journal</title>
     <style>
         * {
             margin: 0;
@@ -57,6 +57,18 @@
             margin-bottom: 5px;
             letter-spacing: -0.02em;
             transition: color 0.3s ease;
+        }
+
+        .streak-display {
+            font-size: 1.1em;
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .streak-display {
+            color: #a0aec0;
         }
 
         .about-link {
@@ -354,10 +366,11 @@
 </head>
 <body>
     <div class="container">
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle light mode">☀️</button>
         
         <div class="header">
-            <div class="logo">Start Writing</div>
+            <div class="logo">Start Writing...</div>
+            <div class="streak-display" id="streakDisplay">Start your writing streak!</div>
             <a href="#about" class="about-link" onclick="showAbout()">About</a>
         </div>
 
@@ -452,12 +465,18 @@
         function initApp() {
             displayRandomPrompt();
             updateWordCount();
+            updateStreakDisplay();
             
-            // Load dark mode preference
-            if (localStorage.getItem('darkMode') === 'true') {
+            // Set dark mode as default, but respect user preference if they've toggled before
+            const savedDarkMode = localStorage.getItem('darkMode');
+            if (savedDarkMode === null) {
+                // First visit - default to dark mode
                 document.body.classList.add('dark-mode');
-                updateDarkModeIcon();
+                localStorage.setItem('darkMode', 'true');
+            } else if (savedDarkMode === 'true') {
+                document.body.classList.add('dark-mode');
             }
+            updateDarkModeIcon();
             
             // Add textarea event listener for word count and auto-start timer
             const textarea = document.getElementById('writingArea');
@@ -547,6 +566,12 @@
                 alert('Please write something before saving!');
                 return;
             }
+
+            // Check if entry is substantial enough for streak (minimum 25 words)
+            const words = entry.trim().split(/\s+/).filter(word => word.length > 0);
+            if (words.length >= 25) {
+                updateStreak();
+            }
             
             // Create formatted text for download
             const timestamp = new Date().toLocaleString();
@@ -572,7 +597,10 @@ Keep writing at startwriting.now
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            alert('Your journal entry has been saved! 📝');
+            const message = words.length >= 25 ? 
+                'Your journal entry has been saved! 📝' : 
+                'Your journal entry has been saved! Write 25+ words next time to count toward your streak. 📝';
+            alert(message);
         }
 
         function newPrompt() {
@@ -634,6 +662,102 @@ How it works:
 The goal is to make writing a daily habit through short, focused sessions. No accounts needed - just write and save locally.
 
 Perfect for daily reflection, gratitude practice, or creative expression.`);
+        }
+
+        // Streak tracking functions
+        function getStreakData() {
+            const defaultData = {
+                currentStreak: 0,
+                longestStreak: 0,
+                lastWriteDate: null,
+                writingDays: []
+            };
+            
+            const stored = localStorage.getItem('writingStreak');
+            return stored ? JSON.parse(stored) : defaultData;
+        }
+
+        function saveStreakData(data) {
+            localStorage.setItem('writingStreak', JSON.stringify(data));
+        }
+
+        function updateStreak() {
+            const today = new Date().toISOString().split('T')[0];
+            const streakData = getStreakData();
+            
+            // Don't count multiple entries on the same day
+            if (streakData.writingDays.includes(today)) {
+                return;
+            }
+            
+            // Add today to writing days
+            streakData.writingDays.push(today);
+            streakData.lastWriteDate = today;
+            
+            // Calculate current streak
+            const sortedDays = streakData.writingDays.sort();
+            let currentStreak = 1;
+            
+            for (let i = sortedDays.length - 2; i >= 0; i--) {
+                const currentDate = new Date(sortedDays[i + 1]);
+                const previousDate = new Date(sortedDays[i]);
+                const dayDiff = (currentDate - previousDate) / (1000 * 60 * 60 * 24);
+                
+                if (dayDiff === 1) {
+                    currentStreak++;
+                } else {
+                    break;
+                }
+            }
+            
+            streakData.currentStreak = currentStreak;
+            
+            // Update longest streak
+            if (currentStreak > streakData.longestStreak) {
+                streakData.longestStreak = currentStreak;
+            }
+            
+            saveStreakData(streakData);
+            updateStreakDisplay();
+            celebrateStreak(currentStreak);
+        }
+
+        function updateStreakDisplay() {
+            const streakData = getStreakData();
+            const display = document.getElementById('streakDisplay');
+            
+            if (streakData.currentStreak === 0) {
+                display.textContent = 'Start your writing streak!';
+            } else if (streakData.currentStreak === 1) {
+                display.textContent = '🔥 Day 1 - Keep it going!';
+            } else {
+                display.textContent = `🔥 ${streakData.currentStreak} day streak`;
+                if (streakData.longestStreak > streakData.currentStreak) {
+                    display.textContent += ` (Best: ${streakData.longestStreak})`;
+                }
+            }
+        }
+
+        function celebrateStreak(streak) {
+            let message = '';
+            
+            if (streak === 1) {
+                message = 'Great job starting your writing streak! 🎉';
+            } else if (streak === 3) {
+                message = 'Amazing! 3 days in a row! 🔥';
+            } else if (streak === 7) {
+                message = 'Incredible! You\'ve written for a whole week! 🌟';
+            } else if (streak === 14) {
+                message = 'Two weeks of writing! You\'re building a real habit! 💪';
+            } else if (streak === 30) {
+                message = 'One month streak! You\'re a writing champion! 🏆';
+            } else if (streak % 10 === 0 && streak > 30) {
+                message = `${streak} days of writing! Absolutely incredible! 🎊`;
+            }
+            
+            if (message) {
+                setTimeout(() => alert(message), 1000);
+            }
         }
 
         // Initialize the app when page loads
