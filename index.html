@@ -21,6 +21,11 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
         }
 
         .container {
@@ -31,6 +36,12 @@
             max-width: 800px;
             width: 100%;
             position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .container {
+            background: #2d3748;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         .header {
@@ -44,6 +55,11 @@
             color: #333;
             margin-bottom: 5px;
             letter-spacing: -0.02em;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .logo {
+            color: #e2e8f0;
         }
 
         .tagline {
@@ -58,6 +74,11 @@
             padding: 25px;
             margin-bottom: 25px;
             position: relative;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode .prompt-section {
+            background: #4a5568;
         }
 
         .prompt-label {
@@ -67,6 +88,11 @@
             font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .prompt-label {
+            color: #a0aec0;
         }
 
         .prompt-text {
@@ -76,6 +102,11 @@
             font-style: italic;
             font-weight: 600;
             padding-right: 60px;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .prompt-text {
+            color: #e2e8f0;
         }
 
         .swap-icon {
@@ -164,7 +195,15 @@
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             resize: vertical;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+
+        .dark-mode .writing-textarea {
+            background: #4a5568;
+            border-color: #718096;
+            color: #e2e8f0;
         }
 
         .writing-textarea:focus {
@@ -177,17 +216,26 @@
             font-style: normal;
         }
 
+        .dark-mode .writing-textarea::placeholder {
+            color: #a0aec0;
+        }
+
         .word-count {
             text-align: right;
             color: #6c757d;
             font-size: 0.9em;
             margin-top: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .word-count {
+            color: #a0aec0;
         }
 
         .about-link {
             position: absolute;
             top: 20px;
-            right: 20px;
+            right: 60px;
             color: #667eea;
             text-decoration: none;
             font-weight: 500;
@@ -197,6 +245,33 @@
 
         .about-link:hover {
             color: #5a6fd8;
+        }
+
+        .dark-mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            background: #667eea;
+        }
+
+        .dark-mode .dark-mode-toggle {
+            border-color: #a0aec0;
+            color: #a0aec0;
+        }
+
+        .dark-mode .dark-mode-toggle:hover {
+            background: #a0aec0;
+            color: #2d3748;
         }
 
         .actions {
@@ -267,6 +342,7 @@
 </head>
 <body>
     <div class="container">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
         <a href="#about" class="about-link" onclick="showAbout()">About</a>
         
         <div class="header">
@@ -280,7 +356,7 @@
         </div>
 
         <div class="timer-section">
-            <div class="timer-display" id="timerDisplay">2:00</div>
+            <div class="timer-display" id="timerDisplay">3:00</div>
             <div class="timer-controls">
                 <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="display: none;">Pause</button>
             </div>
@@ -327,11 +403,36 @@
             "Describe a time when you felt proud of yourself.",
             "What does a meaningful day look like to you?",
             "How do you recharge when you're feeling drained?",
-            "What's something you'd like to let go of?"
+            "What's something you'd like to let go of?",
+            "What skill would you love to master?",
+            "Describe a conversation that changed your thinking.",
+            "What brings you the most energy?",
+            "How do you define success for yourself?",
+            "What's a risk you're glad you took?",
+            "Describe your relationship with technology.",
+            "What's something you've always wanted to try?",
+            "How do you handle uncertainty?",
+            "What's your favorite way to be creative?",
+            "Describe a tradition that's meaningful to you.",
+            "What would you tell someone having a difficult day?",
+            "How has failure taught you something valuable?",
+            "What's something you do that feels authentic to who you are?",
+            "Describe your ideal work environment.",
+            "What's a belief you've outgrown?",
+            "How do you practice gratitude?",
+            "What's something you've learned from a difficult relationship?",
+            "Describe a moment when you felt truly understood.",
+            "What's your relationship with money and security?",
+            "How do you want to be remembered?",
+            "What's something you're learning to accept about yourself?",
+            "Describe a time when you surprised yourself.",
+            "What role does nature play in your life?",
+            "How do you nurture your relationships?",
+            "What's something you wish people understood about you?"
         ];
 
         // Timer variables
-        let timeLeft = 120; // 2 minutes in seconds
+        let timeLeft = 180; // 3 minutes in seconds
         let timerInterval = null;
         let isRunning = false;
 
@@ -340,12 +441,18 @@
             displayRandomPrompt();
             updateWordCount();
             
+            // Load dark mode preference
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                updateDarkModeIcon();
+            }
+            
             // Add textarea event listener for word count and auto-start timer
             const textarea = document.getElementById('writingArea');
             textarea.addEventListener('input', function() {
                 updateWordCount();
                 // Auto-start timer when user starts typing
-                if (!isRunning && textarea.value.trim().length > 0 && timeLeft === 120) {
+                if (!isRunning && textarea.value.trim().length > 0 && timeLeft === 180) {
                     startTimer();
                 }
             });
@@ -398,9 +505,12 @@
             document.getElementById('pauseBtn').style.display = 'none';
             document.getElementById('timerDisplay').classList.add('timer-finished', 'pulse');
             
+            // Play chime sound
+            playChime();
+            
             // Celebration message
             setTimeout(() => {
-                alert('Great job! You completed your 2-minute writing session. 🎉');
+                alert('Great job! You completed your 3-minute writing session. 🎉');
             }, 500);
         }
 
@@ -457,6 +567,47 @@ Keep writing at startwriting.now
             displayRandomPrompt();
         }
 
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            updateDarkModeIcon();
+        }
+
+        function updateDarkModeIcon() {
+            const button = document.querySelector('.dark-mode-toggle');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            button.textContent = isDarkMode ? '☀️' : '🌙';
+        }
+
+        function playChime() {
+            // Create a simple chime sound using Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create three notes for a pleasant chime
+            const frequencies = [523.25, 659.25, 783.99]; // C5, E5, G5
+            
+            frequencies.forEach((freq, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                oscillator.type = 'sine';
+                
+                // Set volume envelope for a soft chime
+                const startTime = audioContext.currentTime + index * 0.2;
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.1);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 1.5);
+                
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 1.5);
+            });
+        }
+
         function showAbout() {
             alert(`About Start Writing
 
@@ -464,7 +615,7 @@ This is a simple micro-journaling app designed to help you capture your thoughts
 
 How it works:
 • Get a random writing prompt
-• Start typing to begin the 2-minute timer
+• Start typing to begin the 3-minute timer
 • Write freely without worrying about structure
 • Save your entry when done
 
