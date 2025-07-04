@@ -314,6 +314,37 @@
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            margin-top: 20px;
+        }
+
+        .dark-mode .footer {
+            border-top-color: #4a5568;
+        }
+
+        .footer-link {
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+        }
+
+        .dark-mode .footer-link {
+            color: #a0aec0;
+        }
+
+        .dark-mode .footer-link:hover {
+            color: #e2e8f0;
         }
 
         .btn-save {
@@ -409,6 +440,10 @@
 
         <div class="actions">
             <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Save My Entry</button>
+        </div>
+
+        <div class="footer">
+            <span style="font-style: italic; color: #8b949e; font-size: 0.85em;">Built with curiosity and launched with hope by </span><a href="https://mattrutherford.co.uk" target="_blank" class="footer-link">Matt Rutherford</a>
         </div>
     </div>
 
