@@ -348,8 +348,8 @@
 
         .dark-mode-toggle {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             background: none;
             border: 2px solid #667eea;
             border-radius: 50%;
@@ -406,6 +406,13 @@
 
         .dark-mode .footer {
             border-top-color: #4a5568;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
 
         .footer-link {
@@ -499,7 +506,6 @@
         <div class="header">
             <div class="logo">Start Writing...</div>
             <div class="streak-display" id="streakDisplay">Start your writing streak!</div>
-            <a href="#about" class="about-link" onclick="showAbout()">About</a>
         </div>
 
         <div class="prompt-section">
@@ -535,7 +541,10 @@
         </div>
 
         <div class="footer">
-            <span style="font-style: italic; color: #8b949e; font-size: 0.85em;">Built with curiosity and launched with hope by </span><a href="https://mattrutherford.co.uk" target="_blank" class="footer-link">Matt Rutherford</a>
+            <div class="footer-content">
+                <span style="font-style: italic; color: #8b949e; font-size: 0.85em;">Built with curiosity and launched with hope by </span><a href="https://mattrutherford.co.uk" target="_blank" class="footer-link">Matt Rutherford</a>
+                <a href="#about" class="footer-link" onclick="showAbout()">About</a>
+            </div>
         </div>
     </div>
 
