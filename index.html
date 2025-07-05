@@ -20,8 +20,16 @@
             box-sizing: border-box;
         }
 
+        // Streak tracking functions
+
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -117,12 +125,60 @@
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
-            position: relative;
             transition: background 0.3s ease;
         }
 
         .dark-mode .prompt-section {
             background: #4a5568;
+        }
+
+        .prompt-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn, .swap-btn {
+            padding: 6px 20px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            background: transparent;
+            color: #667eea;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .filter-btn:hover, .swap-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .dark-mode .filter-btn, .dark-mode .swap-btn {
+            border-color: #a0aec0;
+            color: #a0aec0;
+        }
+
+        .dark-mode .filter-btn.active {
+            background: #a0aec0;
+            color: #2d3748;
+        }
+
+        .dark-mode .filter-btn:hover, .dark-mode .swap-btn:hover {
+            background: #a0aec0;
+            color: #2d3748;
         }
 
         .prompt-label {
@@ -198,6 +254,14 @@
             justify-content: center;
         }
 
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
         .btn {
             padding: 12px 24px;
             border: none;
@@ -206,6 +270,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1em;
+            font-family: 'Inter', sans-serif;
+            flex: 1;
+            max-width: 200px;
+            min-width: 160px;
         }
 
         .btn-primary {
@@ -317,6 +385,18 @@
             margin-bottom: 30px;
         }
 
+        .btn-copy {
+            background: #17a2b8;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+        }
+
+        .btn-copy:hover {
+            background: #138496;
+            transform: translateY(-2px);
+        }
+
         .footer {
             text-align: center;
             padding-top: 20px;
@@ -402,6 +482,12 @@
             
             .actions {
                 flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                max-width: none;
+                width: 100%;
             }
         }
     </style>
@@ -419,7 +505,12 @@
         <div class="prompt-section">
             <div class="prompt-label">Random Prompt</div>
             <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
-            <button class="swap-icon" onclick="newPrompt()" title="Get new prompt">⟲</button>
+            <div class="prompt-controls">
+                <button class="filter-btn active" onclick="setPromptFilter('all')">All</button>
+                <button class="filter-btn" onclick="setPromptFilter('life')">Life</button>
+                <button class="filter-btn" onclick="setPromptFilter('career')">Career</button>
+                <button class="swap-btn" onclick="newPrompt()" title="Get new prompt">New</button>
+            </div>
         </div>
 
         <div class="timer-section">
@@ -439,7 +530,8 @@
         </div>
 
         <div class="actions">
-            <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Save My Entry</button>
+            <button class="btn btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
+            <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Download Entry</button>
         </div>
 
         <div class="footer">
@@ -448,59 +540,116 @@
     </div>
 
     <script>
-        // Journaling prompts
-        const prompts = [
-            "What's one thing that made you smile today?",
-            "Describe a moment when you felt completely at peace.",
-            "What's something you're grateful for right now?",
-            "If you could tell your past self one thing, what would it be?",
-            "What's a small win you had recently?",
-            "Describe your ideal Sunday morning.",
-            "What's something new you learned this week?",
-            "How do you want to feel by the end of today?",
-            "What's a challenge you're facing, and how might you approach it?",
-            "Describe a person who has positively impacted your life.",
-            "What's something you're looking forward to?",
-            "How has your perspective on something changed recently?",
-            "What would you do if you knew you couldn't fail?",
-            "Describe your perfect creative space.",
-            "What's a habit you'd like to develop?",
-            "How do you show kindness to yourself?",
-            "What's something that always makes you laugh?",
-            "Describe a place where you feel most like yourself.",
-            "What's the best advice you've ever received?",
-            "How do you like to celebrate small victories?",
-            "What's something you're curious about right now?",
-            "Describe a time when you felt proud of yourself.",
-            "What does a meaningful day look like to you?",
-            "How do you recharge when you're feeling drained?",
-            "What's something you'd like to let go of?",
-            "What skill would you love to master?",
-            "Describe a conversation that changed your thinking.",
-            "What brings you the most energy?",
-            "How do you define success for yourself?",
-            "What's a risk you're glad you took?",
-            "Describe your relationship with technology.",
-            "What's something you've always wanted to try?",
-            "How do you handle uncertainty?",
-            "What's your favorite way to be creative?",
-            "Describe a tradition that's meaningful to you.",
-            "What would you tell someone having a difficult day?",
-            "How has failure taught you something valuable?",
-            "What's something you do that feels authentic to who you are?",
-            "Describe your ideal work environment.",
-            "What's a belief you've outgrown?",
-            "How do you practice gratitude?",
-            "What's something you've learned from a difficult relationship?",
-            "Describe a moment when you felt truly understood.",
-            "What's your relationship with money and security?",
-            "How do you want to be remembered?",
-            "What's something you're learning to accept about yourself?",
-            "Describe a time when you surprised yourself.",
-            "What role does nature play in your life?",
-            "How do you nurture your relationships?",
-            "What's something you wish people understood about you?"
-        ];
+        // Journaling prompts organized by category
+        const prompts = {
+            life: [
+                "What's one thing that made you smile today?",
+                "Describe a moment when you felt completely at peace.",
+                "What's something you're grateful for right now?",
+                "If you could tell your past self one thing, what would it be?",
+                "What's a small win you had recently?",
+                "Describe your ideal Sunday morning.",
+                "What's something new you learned this week?",
+                "How do you want to feel by the end of today?",
+                "What's a challenge you're facing, and how might you approach it?",
+                "Describe a person who has positively impacted your life.",
+                "What's something you're looking forward to?",
+                "How has your perspective on something changed recently?",
+                "What would you do if you knew you couldn't fail?",
+                "What's a habit you'd like to develop?",
+                "How do you show kindness to yourself?",
+                "What's something that always makes you laugh?",
+                "Describe a place where you feel most like yourself.",
+                "What's the best advice you've ever received?",
+                "How do you like to celebrate small victories?",
+                "What's something you're curious about right now?",
+                "Describe a time when you felt proud of yourself.",
+                "What does a meaningful day look like to you?",
+                "How do you recharge when you're feeling drained?",
+                "What's something you'd like to let go of?",
+                "What skill would you love to master?",
+                "Describe a conversation that changed your thinking.",
+                "What brings you the most energy?",
+                "What's a risk you're glad you took?",
+                "Describe your relationship with technology.",
+                "What's something you've always wanted to try?",
+                "How do you handle uncertainty?",
+                "What's your favorite way to be creative?",
+                "Describe a tradition that's meaningful to you.",
+                "What would you tell someone having a difficult day?",
+                "How has failure taught you something valuable?",
+                "What's something you do that feels authentic to who you are?",
+                "What's a belief you've outgrown?",
+                "How do you practice gratitude?",
+                "What's something you've learned from a difficult relationship?",
+                "Describe a moment when you felt truly understood.",
+                "What's your relationship with money and security?",
+                "How do you want to be remembered?",
+                "What's something you're learning to accept about yourself?",
+                "Describe a time when you surprised yourself.",
+                "What role does nature play in your life?",
+                "How do you nurture your relationships?",
+                "What's something you wish people understood about you?",
+                "What does home mean to you?",
+                "How do you define a life well-lived?",
+                "What's a fear you've overcome or are working to overcome?"
+            ],
+            career: [
+                "What's the most valuable skill you've developed this year?",
+                "Describe a project you're proud of and why.",
+                "What's a professional challenge you're currently navigating?",
+                "How do you define success in your career?",
+                "What's something you want to learn to advance professionally?",
+                "Describe your ideal work environment.",
+                "What's a piece of feedback that changed how you work?",
+                "How do you maintain work-life balance?",
+                "What's a professional relationship that has been meaningful to you?",
+                "Describe a time when you had to step outside your comfort zone at work.",
+                "What's your biggest professional accomplishment this month?",
+                "How do you handle stress and pressure in your work?",
+                "What's a mistake you made that taught you something important?",
+                "Describe your ideal role five years from now.",
+                "What's a skill you wish you had developed earlier in your career?",
+                "How do you stay motivated when work feels challenging?",
+                "What's the best career advice you've ever received?",
+                "Describe a mentor or role model who has influenced your career.",
+                "What's something you want to improve about your communication style?",
+                "How do you approach networking and building professional relationships?",
+                "What's a professional goal you're working toward?",
+                "Describe a time when you had to advocate for yourself at work.",
+                "What's your approach to continuous learning and development?",
+                "How do you handle criticism or negative feedback?",
+                "What's something you love about your current work?",
+                "Describe a time when you had to lead or influence others.",
+                "What's a professional weakness you're working to strengthen?",
+                "How do you prioritize tasks when everything feels urgent?",
+                "What's a career pivot or change you're considering?",
+                "Describe your approach to collaboration and teamwork.",
+                "What's something you want to be known for professionally?",
+                "How do you measure your professional growth?",
+                "What's a professional boundary you've learned to set?",
+                "Describe a time when you had to make a difficult decision at work.",
+                "What's your strategy for staying organized and productive?",
+                "How do you approach giving feedback to colleagues?",
+                "What's a professional opportunity you're excited about?",
+                "Describe your ideal company culture.",
+                "What's something you want to contribute to your industry?",
+                "How do you handle imposter syndrome or self-doubt at work?",
+                "What's a professional skill you're currently developing?",
+                "Describe a time when you exceeded your own expectations.",
+                "What's your approach to managing up and working with supervisors?",
+                "How do you stay current with trends in your field?",
+                "What's a professional achievement you haven't celebrated enough?",
+                "Describe your ideal morning routine for a productive workday.",
+                "What's something you want to stop doing that doesn't serve your career?",
+                "How do you approach problem-solving in your work?",
+                "What's a professional value that guides your decisions?",
+                "Describe how you want to grow as a leader or team member."
+            ]
+        };
+
+        // Current filter state
+        let currentFilter = 'all';
 
         // Timer variables
         let timeLeft = 180; // 3 minutes in seconds
@@ -536,8 +685,30 @@
         }
 
         function displayRandomPrompt() {
-            const randomIndex = Math.floor(Math.random() * prompts.length);
-            document.getElementById('currentPrompt').textContent = prompts[randomIndex];
+            let promptArray;
+            
+            if (currentFilter === 'all') {
+                // Combine all prompts when 'all' is selected
+                promptArray = [...prompts.life, ...prompts.career];
+            } else {
+                promptArray = prompts[currentFilter];
+            }
+            
+            const randomIndex = Math.floor(Math.random() * promptArray.length);
+            document.getElementById('currentPrompt').textContent = promptArray[randomIndex];
+        }
+
+        function setPromptFilter(filter) {
+            currentFilter = filter;
+            
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Get new prompt from selected category
+            displayRandomPrompt();
         }
 
         function startTimer() {
@@ -604,12 +775,12 @@
             document.getElementById('wordCount').textContent = `${words.length} words`;
         }
 
-        function saveEntry() {
+        function copyToClipboard() {
             const prompt = document.getElementById('currentPrompt').textContent;
             const entry = document.getElementById('writingArea').value;
             
             if (entry.trim().length === 0) {
-                alert('Please write something before saving!');
+                alert('Please write something before copying!');
                 return;
             }
 
@@ -619,34 +790,55 @@
                 updateStreak();
             }
             
-            // Create formatted text for download
+            // Create formatted text for clipboard
             const timestamp = new Date().toLocaleString();
             const formattedEntry = `Start Writing Now - Journal Entry
 Date: ${timestamp}
 Prompt: ${prompt}
 
-Entry:
 ${entry}
 
 ---
-Keep writing at startwriting.now
-`;
+startwriting.now`;
             
-            // Create and trigger download
-            const blob = new Blob([formattedEntry], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `journal-entry-${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            // Copy to clipboard
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(formattedEntry).then(() => {
+                    const message = words.length >= 25 ? 
+                        'Entry copied to clipboard! 📋' : 
+                        'Entry copied to clipboard! Write 25+ words next time to count toward your streak. 📋';
+                    alert(message);
+                }).catch(err => {
+                    // Fallback for older browsers
+                    fallbackCopyToClipboard(formattedEntry, words.length);
+                });
+            } else {
+                // Fallback for older browsers or non-secure contexts
+                fallbackCopyToClipboard(formattedEntry, words.length);
+            }
+        }
+
+        function fallbackCopyToClipboard(text, wordCount) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
             
-            const message = words.length >= 25 ? 
-                'Your journal entry has been saved! 📝' : 
-                'Your journal entry has been saved! Write 25+ words next time to count toward your streak. 📝';
-            alert(message);
+            try {
+                document.execCommand('copy');
+                const message = wordCount >= 25 ? 
+                    'Entry copied to clipboard! 📋' : 
+                    'Entry copied to clipboard! Write 25+ words next time to count toward your streak. 📋';
+                alert(message);
+            } catch (err) {
+                alert('Unable to copy to clipboard. Please try the download option instead.');
+            }
+            
+            document.body.removeChild(textArea);
         }
 
         function newPrompt() {
@@ -694,6 +886,50 @@ Keep writing at startwriting.now
             });
         }
 
+        function saveEntry() {
+            const prompt = document.getElementById('currentPrompt').textContent;
+            const entry = document.getElementById('writingArea').value;
+            
+            if (entry.trim().length === 0) {
+                alert('Please write something before downloading!');
+                return;
+            }
+
+            // Check if entry is substantial enough for streak (minimum 25 words)
+            const words = entry.trim().split(/\s+/).filter(word => word.length > 0);
+            if (words.length >= 25) {
+                updateStreak();
+            }
+            
+            // Create formatted text for download
+            const timestamp = new Date().toLocaleString();
+            const formattedEntry = `Start Writing Now - Journal Entry
+Date: ${timestamp}
+Prompt: ${prompt}
+
+${entry}
+
+---
+startwriting.now
+`;
+            
+            // Create and trigger download
+            const blob = new Blob([formattedEntry], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `journal-entry-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const message = words.length >= 25 ? 
+                'Your journal entry has been downloaded! 📝' : 
+                'Your journal entry has been downloaded! Write 25+ words next time to count toward your streak. 📝';
+            alert(message);
+        }
+
         function showAbout() {
             alert(`About Start Writing
 
@@ -703,14 +939,12 @@ How it works:
 • Get a random writing prompt
 • Start typing to begin the 3-minute timer
 • Write freely without worrying about structure
-• Save your entry when done
+• Copy or download your entry when done
 
 The goal is to make writing a daily habit through short, focused sessions. No accounts needed - just write and save locally.
 
 Perfect for daily reflection, gratitude practice, or creative expression.`);
         }
-
-        // Streak tracking functions
         function getStreakData() {
             const defaultData = {
                 currentStreak: 0,
