@@ -540,6 +540,13 @@
             <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Download Entry</button>
         </div>
 
+        <!-- Hidden Netlify form for email collection -->
+        <form name="newsletter-signup" method="POST" data-netlify="true" style="display:none;">
+            <input type="email" name="email">
+            <input type="text" name="source">
+            <input type="text" name="entry_preview">
+        </form>
+
         <div class="footer">
             <div class="footer-content">
                 <div style="font-style: italic; color: #8b949e; font-size: 0.85em;">Built with curiosity and launched with hope by <a href="https://mattrutherford.co.uk" target="_blank" class="footer-link">Matt Rutherford</a></div>
@@ -820,6 +827,11 @@ startwriting.now`;
                         'Entry copied to clipboard! 📋' : 
                         'Entry copied to clipboard! Write 25+ words next time to count toward your streak. 📋';
                     alert(message);
+                    
+                    // Offer email backup after successful copy
+                    setTimeout(() => {
+                        offerEmailBackup(formattedEntry);
+                    }, 1500);
                 }).catch(err => {
                     // Fallback for older browsers
                     fallbackCopyToClipboard(formattedEntry, words.length);
@@ -846,6 +858,11 @@ startwriting.now`;
                     'Entry copied to clipboard! 📋' : 
                     'Entry copied to clipboard! Write 25+ words next time to count toward your streak. 📋';
                 alert(message);
+                
+                // Offer email backup after successful copy
+                setTimeout(() => {
+                    offerEmailBackup(text);
+                }, 1500);
             } catch (err) {
                 alert('Unable to copy to clipboard. Please try the download option instead.');
             }
@@ -940,6 +957,11 @@ startwriting.now
                 'Your journal entry has been downloaded! 📝' : 
                 'Your journal entry has been downloaded! Write 25+ words next time to count toward your streak. 📝';
             alert(message);
+            
+            // Offer email backup after successful download
+            setTimeout(() => {
+                offerEmailBackup(formattedEntry);
+            }, 1500);
         }
 
         function showAbout() {
@@ -1039,6 +1061,10 @@ Perfect for daily reflection, gratitude practice, or creative expression.`);
                 message = 'Amazing! 3 days in a row! 🔥';
             } else if (streak === 7) {
                 message = 'Incredible! You\'ve written for a whole week! 🌟';
+                // Offer streak protection email after celebrating 7-day streak
+                setTimeout(() => {
+                    offerStreakProtection();
+                }, 2000);
             } else if (streak === 14) {
                 message = 'Two weeks of writing! You\'re building a real habit! 💪';
             } else if (streak === 30) {
@@ -1049,6 +1075,72 @@ Perfect for daily reflection, gratitude practice, or creative expression.`);
             
             if (message) {
                 setTimeout(() => alert(message), 1000);
+            }
+        }
+
+        // Email collection functions
+        function offerEmailBackup(entryText) {
+            // Only offer if not previously declined
+            if (localStorage.getItem('emailBackupDeclined') === 'true') {
+                return;
+            }
+            
+            // Don't offer too frequently
+            const lastOffered = localStorage.getItem('lastEmailBackupOffer');
+            const now = new Date().getTime();
+            if (lastOffered && (now - parseInt(lastOffered)) < 7 * 24 * 60 * 60 * 1000) { // 7 days
+                return;
+            }
+            
+            if (confirm('💌 Want to email this entry to yourself?\n\n(You can also join my weekly newsletter for exclusive writing prompts)')) {
+                // Open email client with entry
+                const subject = 'My Writing Entry - ' + new Date().toDateString();
+                const body = encodeURIComponent(entryText);
+                window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+                
+                // Ask for newsletter signup
+                setTimeout(() => {
+                    collectEmailForNewsletter('backup', entryText.substring(0, 100));
+                }, 3000);
+            } else {
+                localStorage.setItem('emailBackupDeclined', 'true');
+            }
+            
+            localStorage.setItem('lastEmailBackupOffer', now.toString());
+        }
+
+        function offerStreakProtection() {
+            // Only offer once
+            if (localStorage.getItem('streakEmailOffered') === 'true') {
+                return;
+            }
+            
+            if (confirm('🔥 7-day streak achieved! Want a gentle daily reminder to keep your streak alive?\n\n(I\'ll also send weekly writing prompts to help you grow)')) {
+                collectEmailForNewsletter('streak', '7-day streak protection');
+            }
+            
+            localStorage.setItem('streakEmailOffered', 'true');
+        }
+
+        function collectEmailForNewsletter(source, preview) {
+            const email = prompt('Enter your email for ' + (source === 'backup' ? 'entry backup and ' : '') + 'weekly writing prompts:');
+            
+            if (email && email.includes('@')) {
+                // Submit to Netlify form
+                const formData = new FormData();
+                formData.append('form-name', 'newsletter-signup');
+                formData.append('email', email);
+                formData.append('source', source);
+                formData.append('entry_preview', preview);
+                
+                fetch('/', {
+                    method: 'POST',
+                    body: formData
+                }).then(() => {
+                    alert('✅ Thanks! You\'ll receive weekly writing prompts and updates.');
+                }).catch(() => {
+                    alert('Thanks! You\'ll receive weekly writing prompts and updates.');
+                });
             }
         }
 
