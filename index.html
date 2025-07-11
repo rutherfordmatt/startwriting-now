@@ -140,51 +140,77 @@
             background: #4a5568;
         }
 
-        .prompt-controls {
+        .smart-toggle-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
-            gap: 12px;
-            flex-wrap: wrap;
+            margin-bottom: 20px;
+            gap: 15px;
         }
 
-        .filter-btn, .swap-btn {
-            padding: 6px 20px;
-            border: 2px solid #667eea;
-            border-radius: 20px;
-            background: transparent;
-            color: #667eea;
-            font-size: 0.85em;
-            font-weight: 500;
+        .smart-toggle {
+            display: flex;
+            background: #e9ecef;
+            border-radius: 25px;
+            padding: 4px;
+            position: relative;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-            min-width: 70px;
-            text-align: center;
         }
 
-        .filter-btn.active {
-            background: #667eea;
-            color: white;
+        .dark-mode .smart-toggle {
+            background: #4a5568;
         }
 
-        .filter-btn:hover, .swap-btn:hover {
-            background: #667eea;
-            color: white;
+        .toggle-option {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: #666;
         }
 
-        .dark-mode .filter-btn, .dark-mode .swap-btn {
-            border-color: #a0aec0;
+        .dark-mode .toggle-option {
             color: #a0aec0;
         }
 
-        .dark-mode .filter-btn.active {
+        .toggle-option.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .dark-mode .toggle-option.active {
             background: #a0aec0;
             color: #2d3748;
         }
 
-        .dark-mode .filter-btn:hover, .dark-mode .swap-btn:hover {
+        .new-prompt-btn {
+            padding: 8px 20px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            background: transparent;
+            color: #667eea;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .new-prompt-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .dark-mode .new-prompt-btn {
+            border-color: #a0aec0;
+            color: #a0aec0;
+        }
+
+        .dark-mode .new-prompt-btn:hover {
             background: #a0aec0;
             color: #2d3748;
         }
@@ -816,14 +842,15 @@
         <!-- WRITING VIEW (existing functionality) -->
         <div id="writeView">
             <div class="prompt-section">
-                <div class="prompt-label">Random Prompt</div>
-                <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
-                <div class="prompt-controls">
-                    <button class="filter-btn active" onclick="setPromptFilter('all')">All</button>
-                    <button class="filter-btn" onclick="setPromptFilter('life')">Life</button>
-                    <button class="filter-btn" onclick="setPromptFilter('career')">Career</button>
-                    <button class="swap-btn" onclick="newPrompt()" title="Get new prompt">New</button>
+                <div class="smart-toggle-section">
+                    <div class="smart-toggle">
+                        <div class="toggle-option active" data-mode="personal">Personal</div>
+                        <div class="toggle-option" data-mode="professional">Professional</div>
+                    </div>
+                    <button class="new-prompt-btn" onclick="newPrompt()">New</button>
                 </div>
+                <div class="prompt-label">Smart Prompt</div>
+                <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
             </div>
 
             <div class="timer-section">
@@ -884,8 +911,12 @@
     </div>
 
     <script>
-        // Journaling prompts organized by category
-        const prompts = {
+        // External prompts data
+        let externalPrompts = null;
+        let promptsLoaded = false;
+
+        // Fallback prompts (embedded for offline use)
+        const fallbackPrompts = {
             life: [
                 "What's one thing that made you smile today?",
                 "Describe a moment when you felt completely at peace.",
@@ -906,37 +937,7 @@
                 "Describe a place where you feel most like yourself.",
                 "What's the best advice you've ever received?",
                 "How do you like to celebrate small victories?",
-                "What's something you're curious about right now?",
-                "Describe a time when you felt proud of yourself.",
-                "What does a meaningful day look like to you?",
-                "How do you recharge when you're feeling drained?",
-                "What's something you'd like to let go of?",
-                "What skill would you love to master?",
-                "Describe a conversation that changed your thinking.",
-                "What brings you the most energy?",
-                "What's a risk you're glad you took?",
-                "Describe your relationship with technology.",
-                "What's something you've always wanted to try?",
-                "How do you handle uncertainty?",
-                "What's your favorite way to be creative?",
-                "Describe a tradition that's meaningful to you.",
-                "What would you tell someone having a difficult day?",
-                "How has failure taught you something valuable?",
-                "What's something you do that feels authentic to who you are?",
-                "What's a belief you've outgrown?",
-                "How do you practice gratitude?",
-                "What's something you've learned from a difficult relationship?",
-                "Describe a moment when you felt truly understood.",
-                "What's your relationship with money and security?",
-                "How do you want to be remembered?",
-                "What's something you're learning to accept about yourself?",
-                "Describe a time when you surprised yourself.",
-                "What role does nature play in your life?",
-                "How do you nurture your relationships?",
-                "What's something you wish people understood about you?",
-                "What does home mean to you?",
-                "How do you define a life well-lived?",
-                "What's a fear you've overcome or are working to overcome?"
+                "What's something you're curious about right now?"
             ],
             career: [
                 "What's the most valuable skill you've developed this year?",
@@ -948,52 +949,13 @@
                 "What's a piece of feedback that changed how you work?",
                 "How do you maintain work-life balance?",
                 "What's a professional relationship that has been meaningful to you?",
-                "Describe a time when you had to step outside your comfort zone at work.",
-                "What's your biggest professional accomplishment this month?",
-                "How do you handle stress and pressure in your work?",
-                "What's a mistake you made that taught you something important?",
-                "Describe your ideal role five years from now.",
-                "What's a skill you wish you had developed earlier in your career?",
-                "How do you stay motivated when work feels challenging?",
-                "What's the best career advice you've ever received?",
-                "Describe a mentor or role model who has influenced your career.",
-                "What's something you want to improve about your communication style?",
-                "How do you approach networking and building professional relationships?",
-                "What's a professional goal you're working toward?",
-                "Describe a time when you had to advocate for yourself at work.",
-                "What's your approach to continuous learning and development?",
-                "How do you handle criticism or negative feedback?",
-                "What's something you love about your current work?",
-                "Describe a time when you had to lead or influence others.",
-                "What's a professional weakness you're working to strengthen?",
-                "How do you prioritize tasks when everything feels urgent?",
-                "What's a career pivot or change you're considering?",
-                "Describe your approach to collaboration and teamwork.",
-                "What's something you want to be known for professionally?",
-                "How do you measure your professional growth?",
-                "What's a professional boundary you've learned to set?",
-                "Describe a time when you had to make a difficult decision at work.",
-                "What's your strategy for staying organized and productive?",
-                "How do you approach giving feedback to colleagues?",
-                "What's a professional opportunity you're excited about?",
-                "Describe your ideal company culture.",
-                "What's something you want to contribute to your industry?",
-                "How do you handle imposter syndrome or self-doubt at work?",
-                "What's a professional skill you're currently developing?",
-                "Describe a time when you exceeded your own expectations.",
-                "What's your approach to managing up and working with supervisors?",
-                "How do you stay current with trends in your field?",
-                "What's a professional achievement you haven't celebrated enough?",
-                "Describe your ideal morning routine for a productive workday.",
-                "What's something you want to stop doing that doesn't serve your career?",
-                "How do you approach problem-solving in your work?",
-                "What's a professional value that guides your decisions?",
-                "Describe how you want to grow as a leader or team member."
+                "Describe a time when you had to step outside your comfort zone at work."
             ]
         };
 
-        // Current filter state
-        let currentFilter = 'all';
+        // Current state
+        let currentMode = 'personal'; // personal or professional
+        let lastUsedPrompts = [];
 
         // Timer variables
         let timeLeft = 180; // 3 minutes in seconds
@@ -1003,9 +965,209 @@
         // View state
         let currentView = 'write';
 
+        // Load external prompts with fallback
+        async function loadExternalPrompts() {
+            try {
+                const response = await fetch('./prompts.json');
+                if (response.ok) {
+                    externalPrompts = await response.json();
+                    promptsLoaded = true;
+                    console.log('External prompts loaded successfully');
+                } else {
+                    throw new Error('Failed to fetch prompts');
+                }
+            } catch (error) {
+                console.warn('Failed to load external prompts, using fallback:', error);
+                externalPrompts = { prompts: fallbackPrompts };
+                promptsLoaded = true;
+            }
+        }
+
+        // Get prompts with fallback
+        function getPrompts() {
+            return externalPrompts ? externalPrompts.prompts : fallbackPrompts;
+        }
+
+        // Get time-aware prompt category
+        function getTimeCategory() {
+            const now = new Date();
+            const hour = now.getHours();
+            const day = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            
+            // Morning/Evening
+            if (hour >= 5 && hour < 12) return 'morning';
+            if (hour >= 18 || hour < 5) return 'evening';
+            
+            // Day of week
+            if (day === 1) return 'monday'; // Monday
+            if (day === 5) return 'friday'; // Friday
+            if (day === 0 || day === 6) return 'weekend'; // Weekend
+            
+            return null;
+        }
+
+        // Get seasonal prompts
+        function getSeasonalPrompts() {
+            const prompts = getPrompts();
+            if (prompts.seasonal && prompts.seasonal.current) {
+                return prompts.seasonal[prompts.seasonal.current] || [];
+            }
+            return [];
+        }
+
+        // Avoid recently used prompts
+        function filterRecentPrompts(promptArray) {
+            if (lastUsedPrompts.length === 0) return promptArray;
+            
+            const filtered = promptArray.filter(prompt => !lastUsedPrompts.includes(prompt));
+            return filtered.length > 0 ? filtered : promptArray;
+        }
+
+        // Track used prompts
+        function trackUsedPrompt(prompt) {
+            lastUsedPrompts.unshift(prompt);
+            // Keep only last 10 prompts to avoid
+            if (lastUsedPrompts.length > 10) {
+                lastUsedPrompts = lastUsedPrompts.slice(0, 10);
+            }
+            localStorage.setItem('recentPrompts', JSON.stringify(lastUsedPrompts));
+        }
+
+        // Load recent prompts from storage
+        function loadRecentPrompts() {
+            const stored = localStorage.getItem('recentPrompts');
+            if (stored) {
+                lastUsedPrompts = JSON.parse(stored);
+            }
+        }
+
+        // Set mode (personal/professional)
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update UI
+            document.querySelectorAll('.toggle-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+            
+            // Get new smart prompt
+            displaySmartPrompt();
+        }
+
+        // Ultra-smart prompt selection
+        function displaySmartPrompt() {
+            if (!promptsLoaded) {
+                document.getElementById('currentPrompt').textContent = 'Loading prompts...';
+                return;
+            }
+
+            const prompts = getPrompts();
+            let promptArray = [];
+            
+            // Step 1: Get base prompts based on mode
+            if (currentMode === 'professional') {
+                promptArray = [...(prompts.career || fallbackPrompts.career)];
+            } else {
+                promptArray = [...(prompts.life || fallbackPrompts.life)];
+            }
+
+            // Step 2: Add time-aware intelligence
+            const timeCategory = getTimeCategory();
+            if (timeCategory && prompts.timeAware && prompts.timeAware[timeCategory]) {
+                // Mix in 30% time-relevant prompts
+                const timePrompts = prompts.timeAware[timeCategory];
+                const mixCount = Math.floor(timePrompts.length * 0.3);
+                promptArray = [...promptArray, ...timePrompts.slice(0, mixCount)];
+            }
+
+            // Step 3: Add mood-aware intelligence based on time and mode
+            const currentHour = new Date().getHours();
+            let smartMoodPrompts = [];
+            
+            if (currentMode === 'personal') {
+                if (currentHour >= 18 || currentHour < 6) {
+                    // Evening/night - reflective and grateful prompts
+                    smartMoodPrompts = [
+                        ...(prompts.moods?.reflective || []).slice(0, 3),
+                        ...(prompts.moods?.grateful || []).slice(0, 3)
+                    ];
+                } else if (currentHour >= 6 && currentHour < 12) {
+                    // Morning - energized and creative prompts
+                    smartMoodPrompts = [
+                        ...(prompts.moods?.energized || []).slice(0, 3),
+                        ...(prompts.moods?.creative || []).slice(0, 2)
+                    ];
+                } else {
+                    // Afternoon - mix of reflective and creative
+                    smartMoodPrompts = [
+                        ...(prompts.moods?.reflective || []).slice(0, 2),
+                        ...(prompts.moods?.creative || []).slice(0, 2)
+                    ];
+                }
+            } else {
+                // Professional mode - always energized and focused
+                smartMoodPrompts = [
+                    ...(prompts.moods?.energized || []).slice(0, 3)
+                ];
+                
+                // Add struggling support prompts on Mondays
+                const today = new Date().getDay();
+                if (today === 1) { // Monday
+                    smartMoodPrompts = [
+                        ...smartMoodPrompts,
+                        ...(prompts.moods?.struggling || []).slice(0, 2)
+                    ];
+                }
+            }
+            
+            promptArray = [...promptArray, ...smartMoodPrompts];
+
+            // Step 4: Add seasonal intelligence
+            const seasonalPrompts = getSeasonalPrompts();
+            if (seasonalPrompts.length > 0) {
+                promptArray = [...promptArray, ...seasonalPrompts.slice(0, 3)];
+            }
+
+            // Step 5: Filter out recently used prompts
+            promptArray = filterRecentPrompts(promptArray);
+
+            // Step 6: Final fallback
+            if (promptArray.length === 0) {
+                promptArray = currentMode === 'professional' ? 
+                    fallbackPrompts.career : fallbackPrompts.life;
+            }
+
+            // Select and display prompt
+            const randomIndex = Math.floor(Math.random() * promptArray.length);
+            const selectedPrompt = promptArray[randomIndex];
+            
+            document.getElementById('currentPrompt').textContent = selectedPrompt;
+            trackUsedPrompt(selectedPrompt);
+        }
+
+        // Initialize smart toggle
+        function initSmartToggle() {
+            document.querySelectorAll('.toggle-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const mode = this.getAttribute('data-mode');
+                    setMode(mode);
+                });
+            });
+            
+            // Set personal as default
+            setMode('personal');
+        }
+
         // Initialize the app
-        function initApp() {
-            displayRandomPrompt();
+        async function initApp() {
+            // Load external prompts first
+            await loadExternalPrompts();
+            loadRecentPrompts();
+            
+            // Initialize UI
+            initSmartToggle();
+            displaySmartPrompt();
             updateWordCount();
             updateStreakDisplay();
             updateHistoryDisplay();
@@ -1047,7 +1209,7 @@
                 prompt: prompt,
                 text: text,
                 wordCount: wordCount,
-                category: currentFilter
+                mode: currentMode
             };
             
             entries.unshift(entry); // Add to beginning of array
@@ -1106,13 +1268,19 @@
                 const preview = entry.text.length > 200 ? 
                     entry.text.substring(0, 200) + '...' : entry.text;
                 
+                const modeEmoji = {
+                    'personal': '💭',
+                    'professional': '💼'
+                };
+                
                 return `
                     <div class="entry-item" data-entry-id="${entry.id}">
                         <div class="entry-header">
                             <div class="entry-date">${formattedDate}</div>
                             <div class="entry-meta">
                                 <span>${entry.wordCount} words</span>
-                                <span>${entry.category}</span>
+                                ${entry.mode ? `<span>${modeEmoji[entry.mode] || '💭'} ${entry.mode}</span>` : 
+                                  entry.category ? `<span>${entry.category}</span>` : '<span>personal</span>'}
                             </div>
                         </div>
                         <div class="entry-prompt">${entry.prompt}</div>
@@ -1527,18 +1695,25 @@ startwriting.now
         function showAbout() {
             alert(`About Start Writing
 
-This is a simple micro-journaling app designed to help you capture your thoughts quickly and easily.
+This is an intelligent micro-journaling app designed to help you capture your thoughts with the perfect prompts.
 
 How it works:
-• Get a random writing prompt
+• Choose Personal or Professional writing mode
+• Get smart prompts that adapt to time of day and season
 • Start typing to begin the 3-minute timer
 • Write freely without worrying about structure
-• Copy or download your entry when done
-• View your writing history anytime
+• Your entries are automatically saved to your history
 
-The goal is to make writing a daily habit through short, focused sessions. No accounts needed - everything saves locally in your browser.
+Smart Features:
+• Time-aware prompts (different for morning vs evening)
+• Intelligent prompt selection that avoids recent duplicates
+• Seasonal and contextual awareness
+• Full writing history with search and export
+• Works completely offline
 
-Perfect for daily reflection, gratitude practice, or creative expression.`);
+The goal is to make writing a daily habit through short, focused sessions with perfectly matched prompts. No accounts needed - everything saves locally in your browser.
+
+Perfect for daily reflection, gratitude practice, career planning, or creative expression.`);
         }
         function getStreakData() {
             const defaultData = {
