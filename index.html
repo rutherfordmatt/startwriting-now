@@ -608,33 +608,47 @@
         .entries-container {
             max-height: 500px;
             overflow-y: auto;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            padding: 20px;
+            padding: 0;
         }
 
-        .dark-mode .entries-container {
-            border-color: #4a5568;
+        /* Hide scrollbar but keep functionality */
+        .entries-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .entries-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .entries-container::-webkit-scrollbar-thumb {
+            background: #e9ecef;
+            border-radius: 3px;
+        }
+
+        .dark-mode .entries-container::-webkit-scrollbar-thumb {
             background: #4a5568;
         }
 
         .entry-item {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f3f4;
+            transition: all 0.2s ease;
+        }
+
+        .entry-item:last-child {
+            border-bottom: none;
         }
 
         .entry-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: rgba(102, 126, 234, 0.02);
         }
 
         .dark-mode .entry-item {
-            background: #2d3748;
-            border-left-color: #a0aec0;
+            border-bottom-color: #4a5568;
+        }
+
+        .dark-mode .entry-item:hover {
+            background: rgba(160, 174, 192, 0.05);
         }
 
         .entry-header {
@@ -670,16 +684,15 @@
 
         .entry-prompt {
             font-style: italic;
-            color: #666;
-            margin-bottom: 10px;
-            font-size: 0.95em;
-            border-left: 3px solid #e9ecef;
-            padding-left: 15px;
+            color: #8b949e;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            padding-left: 0;
+            border-left: none;
         }
 
         .dark-mode .entry-prompt {
             color: #a0aec0;
-            border-left-color: #4a5568;
         }
 
         .entry-text {
@@ -694,20 +707,21 @@
 
         .entry-actions {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: flex-end;
-            margin-top: 15px;
+            margin-top: 12px;
         }
 
         .btn-entry-action {
-            padding: 5px 12px;
-            border: 1px solid #667eea;
-            border-radius: 15px;
-            background: transparent;
+            padding: 4px 12px;
+            border: none;
+            border-radius: 12px;
+            background: #f8f9fa;
             color: #667eea;
             font-size: 0.8em;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            font-weight: 500;
         }
 
         .btn-entry-action:hover {
@@ -716,7 +730,7 @@
         }
 
         .dark-mode .btn-entry-action {
-            border-color: #a0aec0;
+            background: #4a5568;
             color: #a0aec0;
         }
 
