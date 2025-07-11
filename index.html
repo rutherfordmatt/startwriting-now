@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<!-- Staging test -->
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -478,6 +476,266 @@
             display: none;
         }
 
+        /* NEW STYLES FOR ENTRY HISTORY */
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            background: transparent;
+            color: #667eea;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .dark-mode .view-btn {
+            border-color: #a0aec0;
+            color: #a0aec0;
+        }
+
+        .dark-mode .view-btn.active {
+            background: #a0aec0;
+            color: #2d3748;
+        }
+
+        .dark-mode .view-btn:hover {
+            background: #a0aec0;
+            color: #2d3748;
+        }
+
+        .history-section {
+            margin-bottom: 25px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .history-search {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .history-search:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .dark-mode .history-search {
+            background: #4a5568;
+            border-color: #718096;
+            color: #e2e8f0;
+        }
+
+        .history-stats {
+            font-size: 0.9em;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .dark-mode .history-stats {
+            color: #a0aec0;
+        }
+
+        .history-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-export-all {
+            background: #fd7e14;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-export-all:hover {
+            background: #e8590c;
+            transform: translateY(-1px);
+        }
+
+        .btn-clear-history {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear-history:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .entries-container {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .dark-mode .entries-container {
+            border-color: #4a5568;
+            background: #4a5568;
+        }
+
+        .entry-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .entry-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .entry-item {
+            background: #2d3748;
+            border-left-color: #a0aec0;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .entry-date {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+
+        .dark-mode .entry-date {
+            color: #a0aec0;
+        }
+
+        .entry-meta {
+            font-size: 0.8em;
+            color: #6c757d;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .dark-mode .entry-meta {
+            color: #a0aec0;
+        }
+
+        .entry-prompt {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            border-left: 3px solid #e9ecef;
+            padding-left: 15px;
+        }
+
+        .dark-mode .entry-prompt {
+            color: #a0aec0;
+            border-left-color: #4a5568;
+        }
+
+        .entry-text {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .dark-mode .entry-text {
+            color: #e2e8f0;
+        }
+
+        .entry-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .btn-entry-action {
+            padding: 5px 12px;
+            border: 1px solid #667eea;
+            border-radius: 15px;
+            background: transparent;
+            color: #667eea;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-entry-action:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .dark-mode .btn-entry-action {
+            border-color: #a0aec0;
+            color: #a0aec0;
+        }
+
+        .dark-mode .btn-entry-action:hover {
+            background: #a0aec0;
+            color: #2d3748;
+        }
+
+        .no-entries {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 40px 20px;
+        }
+
+        .dark-mode .no-entries {
+            color: #a0aec0;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 25px;
@@ -506,6 +764,23 @@
                 max-width: none;
                 width: 100%;
             }
+
+            .history-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .history-controls {
+                justify-content: center;
+            }
+
+            .entry-header {
+                flex-direction: column;
+            }
+
+            .entry-actions {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -518,36 +793,62 @@
             <div class="streak-display" id="streakDisplay">Start your writing streak!</div>
         </div>
 
-        <div class="prompt-section">
-            <div class="prompt-label">Random Prompt</div>
-            <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
-            <div class="prompt-controls">
-                <button class="filter-btn active" onclick="setPromptFilter('all')">All</button>
-                <button class="filter-btn" onclick="setPromptFilter('life')">Life</button>
-                <button class="filter-btn" onclick="setPromptFilter('career')">Career</button>
-                <button class="swap-btn" onclick="newPrompt()" title="Get new prompt">New</button>
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="showWriteView()">✏️ Write</button>
+            <button class="view-btn" onclick="showHistoryView()">📖 History</button>
+        </div>
+
+        <!-- WRITING VIEW (existing functionality) -->
+        <div id="writeView">
+            <div class="prompt-section">
+                <div class="prompt-label">Random Prompt</div>
+                <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
+                <div class="prompt-controls">
+                    <button class="filter-btn active" onclick="setPromptFilter('all')">All</button>
+                    <button class="filter-btn" onclick="setPromptFilter('life')">Life</button>
+                    <button class="filter-btn" onclick="setPromptFilter('career')">Career</button>
+                    <button class="swap-btn" onclick="newPrompt()" title="Get new prompt">New</button>
+                </div>
+            </div>
+
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay">3:00</div>
+                <div class="timer-controls">
+                    <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="visibility: hidden;">Pause</button>
+                </div>
+            </div>
+
+            <div class="writing-area">
+                <textarea 
+                    class="writing-textarea" 
+                    id="writingArea" 
+                    placeholder="Start writing..."
+                ></textarea>
+                <div class="word-count" id="wordCount">0 words</div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
+                <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Download Entry</button>
             </div>
         </div>
 
-        <div class="timer-section">
-            <div class="timer-display" id="timerDisplay">3:00</div>
-            <div class="timer-controls">
-                <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="visibility: hidden;">Pause</button>
+        <!-- HISTORY VIEW (new functionality) -->
+        <div id="historyView" class="hidden">
+            <div class="history-section">
+                <div class="history-header">
+                    <input type="text" class="history-search" id="historySearch" placeholder="Search your entries..." onkeyup="filterEntries()">
+                    <div class="history-stats" id="historyStats">0 entries</div>
+                    <div class="history-controls">
+                        <button class="btn-export-all" onclick="exportAllEntries()">📥 Export All</button>
+                        <button class="btn-clear-history" onclick="clearAllHistory()">🗑️ Clear All</button>
+                    </div>
+                </div>
+                <div class="entries-container" id="entriesContainer">
+                    <div class="no-entries">No entries yet. Start writing to see your history!</div>
+                </div>
             </div>
-        </div>
-
-        <div class="writing-area">
-            <textarea 
-                class="writing-textarea" 
-                id="writingArea" 
-                placeholder="Start writing..."
-            ></textarea>
-            <div class="word-count" id="wordCount">0 words</div>
-        </div>
-
-        <div class="actions">
-            <button class="btn btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
-            <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Download Entry</button>
         </div>
 
         <!-- Hidden Netlify form for email collection -->
@@ -685,11 +986,15 @@
         let timerInterval = null;
         let isRunning = false;
 
+        // View state
+        let currentView = 'write';
+
         // Initialize the app
         function initApp() {
             displayRandomPrompt();
             updateWordCount();
             updateStreakDisplay();
+            updateHistoryDisplay();
             
             // Set dark mode as default, but respect user preference if they've toggled before
             const savedDarkMode = localStorage.getItem('darkMode');
@@ -712,6 +1017,233 @@
                 }
             });
         }
+
+        // NEW ENTRY HISTORY FUNCTIONS
+        
+        function getEntries() {
+            const entries = localStorage.getItem('writingEntries');
+            return entries ? JSON.parse(entries) : [];
+        }
+
+        function saveEntryToHistory(prompt, text, wordCount) {
+            const entries = getEntries();
+            const entry = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                prompt: prompt,
+                text: text,
+                wordCount: wordCount,
+                category: currentFilter
+            };
+            
+            entries.unshift(entry); // Add to beginning of array
+            localStorage.setItem('writingEntries', JSON.stringify(entries));
+            updateHistoryDisplay();
+        }
+
+        function showWriteView() {
+            currentView = 'write';
+            document.getElementById('writeView').classList.remove('hidden');
+            document.getElementById('historyView').classList.add('hidden');
+            
+            // Update view buttons
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.view-btn').classList.add('active');
+        }
+
+        function showHistoryView() {
+            currentView = 'history';
+            document.getElementById('writeView').classList.add('hidden');
+            document.getElementById('historyView').classList.remove('hidden');
+            
+            // Update view buttons
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view-btn')[1].classList.add('active');
+            
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const entries = getEntries();
+            const container = document.getElementById('entriesContainer');
+            const stats = document.getElementById('historyStats');
+            
+            // Update stats
+            const totalWords = entries.reduce((sum, entry) => sum + entry.wordCount, 0);
+            stats.textContent = `${entries.length} entries • ${totalWords} total words`;
+            
+            if (entries.length === 0) {
+                container.innerHTML = '<div class="no-entries">No entries yet. Start writing to see your history!</div>';
+                return;
+            }
+
+            // Generate entries HTML
+            const entriesHTML = entries.map(entry => {
+                const date = new Date(entry.date);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const preview = entry.text.length > 200 ? 
+                    entry.text.substring(0, 200) + '...' : entry.text;
+                
+                return `
+                    <div class="entry-item" data-entry-id="${entry.id}">
+                        <div class="entry-header">
+                            <div class="entry-date">${formattedDate}</div>
+                            <div class="entry-meta">
+                                <span>${entry.wordCount} words</span>
+                                <span>${entry.category}</span>
+                            </div>
+                        </div>
+                        <div class="entry-prompt">${entry.prompt}</div>
+                        <div class="entry-text">${preview}</div>
+                        <div class="entry-actions">
+                            <button class="btn-entry-action" onclick="copyEntry('${entry.id}')">Copy</button>
+                            <button class="btn-entry-action" onclick="downloadEntry('${entry.id}')">Download</button>
+                            <button class="btn-entry-action" onclick="deleteEntry('${entry.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = entriesHTML;
+        }
+
+        function filterEntries() {
+            const searchTerm = document.getElementById('historySearch').value.toLowerCase();
+            const entries = document.querySelectorAll('.entry-item');
+            
+            entries.forEach(entry => {
+                const text = entry.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    entry.style.display = 'block';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        }
+
+        function copyEntry(entryId) {
+            const entries = getEntries();
+            const entry = entries.find(e => e.id == entryId);
+            if (!entry) return;
+            
+            const timestamp = new Date(entry.date).toLocaleString();
+            const formattedEntry = `Start Writing Now - Journal Entry
+Date: ${timestamp}
+Prompt: ${entry.prompt}
+
+${entry.text}
+
+---
+startwriting.now`;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(formattedEntry).then(() => {
+                    alert('Entry copied to clipboard! 📋');
+                });
+            } else {
+                fallbackCopyToClipboard(formattedEntry, entry.wordCount);
+            }
+        }
+
+        function downloadEntry(entryId) {
+            const entries = getEntries();
+            const entry = entries.find(e => e.id == entryId);
+            if (!entry) return;
+            
+            const timestamp = new Date(entry.date).toLocaleString();
+            const formattedEntry = `Start Writing Now - Journal Entry
+Date: ${timestamp}
+Prompt: ${entry.prompt}
+
+${entry.text}
+
+---
+startwriting.now
+`;
+            
+            const blob = new Blob([formattedEntry], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `journal-entry-${new Date(entry.date).toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function deleteEntry(entryId) {
+            if (!confirm('Are you sure you want to delete this entry? This cannot be undone.')) {
+                return;
+            }
+            
+            const entries = getEntries();
+            const filteredEntries = entries.filter(e => e.id != entryId);
+            localStorage.setItem('writingEntries', JSON.stringify(filteredEntries));
+            updateHistoryDisplay();
+        }
+
+        function exportAllEntries() {
+            const entries = getEntries();
+            if (entries.length === 0) {
+                alert('No entries to export!');
+                return;
+            }
+            
+            const allEntries = entries.map(entry => {
+                const timestamp = new Date(entry.date).toLocaleString();
+                return `Start Writing Now - Journal Entry
+Date: ${timestamp}
+Prompt: ${entry.prompt}
+
+${entry.text}
+
+---`;
+            }).join('\n\n');
+            
+            const finalContent = `${allEntries}
+
+Complete Journal Export from startwriting.now
+Total Entries: ${entries.length}
+Total Words: ${entries.reduce((sum, entry) => sum + entry.wordCount, 0)}
+Exported: ${new Date().toLocaleString()}`;
+            
+            const blob = new Blob([finalContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `all-journal-entries-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert(`Exported ${entries.length} entries! 📥`);
+        }
+
+        function clearAllHistory() {
+            if (!confirm('Are you sure you want to delete ALL entries? This cannot be undone.')) {
+                return;
+            }
+            
+            if (!confirm('This will permanently delete all your writing history. Are you absolutely sure?')) {
+                return;
+            }
+            
+            localStorage.removeItem('writingEntries');
+            updateHistoryDisplay();
+            alert('All entries have been deleted.');
+        }
+
+        // EXISTING FUNCTIONS (modified to save to history)
 
         function displayRandomPrompt() {
             let promptArray;
@@ -817,6 +1349,8 @@
             const words = entry.trim().split(/\s+/).filter(word => word.length > 0);
             if (words.length >= 25) {
                 updateStreak();
+                // Save to history
+                saveEntryToHistory(prompt, entry, words.length);
             }
             
             // Create formatted text for clipboard
@@ -938,6 +1472,8 @@ startwriting.now`;
             const words = entry.trim().split(/\s+/).filter(word => word.length > 0);
             if (words.length >= 25) {
                 updateStreak();
+                // Save to history
+                saveEntryToHistory(prompt, entry, words.length);
             }
             
             // Create formatted text for download
@@ -984,8 +1520,9 @@ How it works:
 • Start typing to begin the 3-minute timer
 • Write freely without worrying about structure
 • Copy or download your entry when done
+• View your writing history anytime
 
-The goal is to make writing a daily habit through short, focused sessions. No accounts needed - just write and save locally.
+The goal is to make writing a daily habit through short, focused sessions. No accounts needed - everything saves locally in your browser.
 
 Perfect for daily reflection, gratitude practice, or creative expression.`);
         }
