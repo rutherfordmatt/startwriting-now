@@ -22,20 +22,21 @@
         gtag('config', 'G-C841TYRSY9');
     </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        // Streak tracking functions
-
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* Force remove all outlines */
+        button:focus,
+        button:active,
+        .new-prompt-btn:focus,
+        .new-prompt-btn:active,
+        *:focus {
+            outline: none !important;
         }
 
         body {
@@ -47,6 +48,7 @@
             align-items: center;
             padding: 20px;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
         body.dark-mode {
@@ -73,6 +75,11 @@
             text-align: left;
             margin-bottom: 30px;
             position: relative;
+            height: 90px; /* Fixed height for header */
+            flex-shrink: 0; /* Don't allow compression */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .logo {
@@ -198,6 +205,18 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
+            outline: none !important; /* Force remove outline */
+        }
+
+        .new-prompt-btn:focus {
+            outline: none !important; /* Force remove outline on focus */
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3); /* Custom focus indicator */
+        }
+
+        .new-prompt-btn:hover {
+            background: #667eea;
+            color: white;
+            outline: none !important; /* Force remove outline on hover */
         }
 
         .new-prompt-btn:hover {
@@ -208,11 +227,18 @@
         .dark-mode .new-prompt-btn {
             border-color: #a0aec0;
             color: #a0aec0;
+            outline: none !important; /* Force remove outline */
         }
 
         .dark-mode .new-prompt-btn:hover {
             background: #a0aec0;
             color: #2d3748;
+            outline: none !important; /* Force remove outline */
+        }
+
+        .dark-mode .new-prompt-btn:focus {
+            outline: none !important; /* Force remove outline on focus */
+            box-shadow: 0 0 0 2px rgba(160, 174, 192, 0.3); /* Custom focus indicator for dark mode */
         }
 
         .prompt-label {
@@ -273,6 +299,8 @@
             align-items: center;
             justify-content: center;
             gap: 20px;
+            height: 80px; /* Fixed height for timer section */
+            flex-shrink: 0; /* Don't allow compression */
         }
 
         .timer-display {
@@ -294,6 +322,9 @@
             justify-content: center;
             flex-wrap: wrap;
             margin-bottom: 30px;
+            height: 60px; /* Fixed height for actions */
+            align-items: center;
+            flex-shrink: 0; /* Don't allow compression */
         }
 
         .btn {
@@ -411,14 +442,6 @@
             color: #2d3748;
         }
 
-        .actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
         .btn-copy {
             background: #17a2b8;
             color: white;
@@ -499,7 +522,7 @@
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         /* NEW STYLES FOR ENTRY HISTORY */
@@ -508,6 +531,9 @@
             justify-content: center;
             margin-bottom: 20px;
             gap: 10px;
+            height: 50px; /* Fixed height for view toggle */
+            align-items: center;
+            flex-shrink: 0; /* Don't allow compression */
         }
 
         .view-btn {
@@ -520,6 +546,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
+            min-width: 100px; /* Ensure consistent width */
+            text-align: center;
         }
 
         .view-btn.active {
@@ -776,10 +804,24 @@
             color: #a0aec0;
         }
 
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 25px;
                 margin: 10px;
+                height: 700px; /* Fixed height for mobile, slightly smaller */
             }
             
             .logo {
@@ -798,16 +840,19 @@
             .actions {
                 flex-direction: column;
                 align-items: center;
+                height: 80px; /* Taller on mobile for stacked buttons */
             }
             
             .btn {
                 max-width: none;
                 width: 100%;
+                margin-bottom: 5px;
             }
 
             .history-header {
                 flex-direction: column;
                 align-items: stretch;
+                min-height: 120px; /* Taller on mobile for stacked elements */
             }
 
             .history-controls {
@@ -820,6 +865,31 @@
 
             .entry-actions {
                 justify-content: center;
+            }
+
+            /* Mobile-specific height adjustments */
+            .prompt-section {
+                height: 140px; /* Slightly smaller on mobile */
+            }
+
+            .timer-section {
+                height: 60px; /* Smaller timer on mobile */
+            }
+
+            .views-container {
+                min-height: 480px; /* Adjusted for mobile container height */
+            }
+
+            .header {
+                height: 80px; /* Slightly smaller header on mobile */
+            }
+
+            .view-toggle {
+                height: 45px; /* Slightly smaller on mobile */
+            }
+
+            .footer {
+                height: 70px; /* Slightly smaller footer on mobile */
             }
         }
     </style>
@@ -834,60 +904,67 @@
         </div>
 
         <!-- View Toggle -->
-        <div class="view-toggle">
-            <button class="view-btn active" onclick="showWriteView()">✏️ Write</button>
-            <button class="view-btn" onclick="showHistoryView()">📖 History</button>
+        <div class="view-toggle" role="tablist" aria-label="View selection">
+            <button class="view-btn active" onclick="showWriteView()" role="tab" aria-selected="true" aria-controls="writeView">Write</button>
+            <button class="view-btn" onclick="showHistoryView()" role="tab" aria-selected="false" aria-controls="historyView">History</button>
         </div>
 
-        <!-- WRITING VIEW (existing functionality) -->
-        <div id="writeView">
-            <div class="prompt-section">
-                <div class="smart-toggle-section">
-                    <div class="smart-toggle">
-                        <div class="toggle-option active" data-mode="personal">Personal</div>
-                        <div class="toggle-option" data-mode="professional">Professional</div>
+        <!-- Views Container -->
+        <div class="views-container">
+            <!-- WRITING VIEW (existing functionality) -->
+            <div id="writeView">
+                <div class="prompt-section">
+                    <div class="smart-toggle-section">
+                        <div class="smart-toggle">
+                            <div class="toggle-option active" data-mode="personal">Personal</div>
+                            <div class="toggle-option" data-mode="career">Career</div>
+                        </div>
+                        <button class="new-prompt-btn" onclick="newPrompt()">New</button>
                     </div>
-                    <button class="new-prompt-btn" onclick="newPrompt()">New</button>
+                    <div class="prompt-label">Smart Prompt</div>
+                    <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
                 </div>
-                <div class="prompt-label">Smart Prompt</div>
-                <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
-            </div>
 
-            <div class="timer-section">
-                <div class="timer-display" id="timerDisplay">3:00</div>
-                <div class="timer-controls">
-                    <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="visibility: hidden;">Pause</button>
-                </div>
-            </div>
-
-            <div class="writing-area">
-                <textarea 
-                    class="writing-textarea" 
-                    id="writingArea" 
-                    placeholder="Start writing..."
-                ></textarea>
-                <div class="word-count" id="wordCount">0 words</div>
-            </div>
-
-            <div class="actions">
-                <button class="btn btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
-                <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Download Entry</button>
-            </div>
-        </div>
-
-        <!-- HISTORY VIEW (new functionality) -->
-        <div id="historyView" class="hidden">
-            <div class="history-section">
-                <div class="history-header">
-                    <input type="text" class="history-search" id="historySearch" placeholder="Search your entries..." onkeyup="filterEntries()">
-                    <div class="history-stats" id="historyStats">0 entries</div>
-                    <div class="history-controls">
-                        <button class="btn-export-all" onclick="exportAllEntries()">📥 Export All</button>
-                        <button class="btn-clear-history" onclick="clearAllHistory()">🗑️ Clear All</button>
+                <div class="timer-section">
+                    <div class="timer-display" id="timerDisplay" aria-live="polite" aria-label="Writing timer">3:00</div>
+                    <div class="timer-controls">
+                        <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="visibility: hidden;" aria-label="Pause writing timer">Pause</button>
                     </div>
                 </div>
-                <div class="entries-container" id="entriesContainer">
-                    <div class="no-entries">No entries yet. Start writing to see your history!</div>
+
+                <div class="writing-area">
+                    <textarea 
+                        class="writing-textarea" 
+                        id="writingArea" 
+                        placeholder="Start writing..."
+                        aria-label="Writing area for journal entry"
+                        aria-describedby="wordCount"
+                    ></textarea>
+                    <div class="word-count" id="wordCount" aria-live="polite">0 words</div>
+                </div>
+
+                <div class="actions" role="group" aria-label="Entry actions">
+                    <button class="btn btn-copy" id="copyBtn" onclick="copyToClipboard()" aria-describedby="copyHelp">Copy</button>
+                    <button class="btn btn-save" id="saveBtn" onclick="saveEntry()" aria-describedby="saveHelp">Download</button>
+                    <div id="copyHelp" class="sr-only">Copies your journal entry to clipboard for easy sharing</div>
+                    <div id="saveHelp" class="sr-only">Downloads your journal entry as a text file</div>
+                </div>
+            </div>
+
+            <!-- HISTORY VIEW (new functionality) -->
+            <div id="historyView" class="hidden">
+                <div class="history-section">
+                    <div class="history-header">
+                        <input type="text" class="history-search" id="historySearch" placeholder="Search your entries..." onkeyup="filterEntries()">
+                        <div class="history-stats" id="historyStats">0 entries</div>
+                        <div class="history-controls">
+                            <button class="btn-export-all" onclick="exportAllEntries()">📥 Export All</button>
+                            <button class="btn-clear-history" onclick="clearAllHistory()">🗑️ Clear All</button>
+                        </div>
+                    </div>
+                    <div class="entries-container" id="entriesContainer">
+                        <div class="no-entries">No entries yet. Start writing to see your history!</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -968,18 +1045,41 @@
         // Load external prompts with fallback
         async function loadExternalPrompts() {
             try {
-                const response = await fetch('./prompts.json');
+                // Add timeout to prevent hanging
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+                
+                const response = await fetch('./prompts.json', {
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
                 if (response.ok) {
                     externalPrompts = await response.json();
+                    
+                    // Validate prompt structure
+                    if (!externalPrompts.prompts || 
+                        !externalPrompts.prompts.life || 
+                        !externalPrompts.prompts.career) {
+                        throw new Error('Invalid prompt data structure');
+                    }
+                    
                     promptsLoaded = true;
                     console.log('External prompts loaded successfully');
                 } else {
-                    throw new Error('Failed to fetch prompts');
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
             } catch (error) {
-                console.warn('Failed to load external prompts, using fallback:', error);
+                console.warn('Failed to load external prompts:', error.message);
                 externalPrompts = { prompts: fallbackPrompts };
                 promptsLoaded = true;
+                
+                // Store failure for later retry if needed
+                localStorage.setItem('lastPromptLoadError', JSON.stringify({
+                    error: error.message,
+                    timestamp: Date.now()
+                }));
             }
         }
 
@@ -1041,9 +1141,9 @@
             }
         }
 
-        // Set mode (personal/professional)
+        // Set mode (personal/career)
         function setMode(mode) {
-            currentMode = mode;
+            currentMode = mode === 'career' ? 'professional' : 'personal';
             
             // Update UI
             document.querySelectorAll('.toggle-option').forEach(option => {
@@ -1222,9 +1322,15 @@
             document.getElementById('writeView').classList.remove('hidden');
             document.getElementById('historyView').classList.add('hidden');
             
-            // Update view buttons
-            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.view-btn').classList.add('active');
+            // Update view buttons and ARIA states
+            const viewButtons = document.querySelectorAll('.view-btn');
+            viewButtons.forEach((btn, index) => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            
+            viewButtons[0].classList.add('active');
+            viewButtons[0].setAttribute('aria-selected', 'true');
         }
 
         function showHistoryView() {
@@ -1232,9 +1338,15 @@
             document.getElementById('writeView').classList.add('hidden');
             document.getElementById('historyView').classList.remove('hidden');
             
-            // Update view buttons
-            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.view-btn')[1].classList.add('active');
+            // Update view buttons and ARIA states
+            const viewButtons = document.querySelectorAll('.view-btn');
+            viewButtons.forEach((btn, index) => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            
+            viewButtons[1].classList.add('active');
+            viewButtons[1].setAttribute('aria-selected', 'true');
             
             updateHistoryDisplay();
         }
@@ -1243,6 +1355,13 @@
             const entries = getEntries();
             const container = document.getElementById('entriesContainer');
             const stats = document.getElementById('historyStats');
+            
+            // Performance optimization: check if entries have changed
+            const entriesHash = JSON.stringify(entries.map(e => ({ id: e.id, date: e.date })));
+            if (lastRenderedEntries === entriesHash && container.children.length > 0) {
+                return; // No need to re-render
+            }
+            lastRenderedEntries = entriesHash;
             
             // Update stats
             const totalWords = entries.reduce((sum, entry) => sum + entry.wordCount, 0);
@@ -1253,62 +1372,107 @@
                 return;
             }
 
-            // Generate entries HTML
+            // Generate entries HTML with better error handling
             const entriesHTML = entries.map(entry => {
-                const date = new Date(entry.date);
-                const formattedDate = date.toLocaleDateString('en-US', { 
-                    weekday: 'short', 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                
-                const preview = entry.text.length > 200 ? 
-                    entry.text.substring(0, 200) + '...' : entry.text;
-                
-                const modeEmoji = {
-                    'personal': '💭',
-                    'professional': '💼'
-                };
-                
-                return `
-                    <div class="entry-item" data-entry-id="${entry.id}">
-                        <div class="entry-header">
-                            <div class="entry-date">${formattedDate}</div>
-                            <div class="entry-meta">
-                                <span>${entry.wordCount} words</span>
-                                ${entry.mode ? `<span>${modeEmoji[entry.mode] || '💭'} ${entry.mode}</span>` : 
-                                  entry.category ? `<span>${entry.category}</span>` : '<span>personal</span>'}
+                try {
+                    const date = new Date(entry.date);
+                    
+                    // Validate date
+                    if (isNaN(date.getTime())) {
+                        console.warn('Invalid date for entry:', entry.id);
+                        return ''; // Skip invalid entries
+                    }
+                    
+                    const formattedDate = date.toLocaleDateString('en-US', { 
+                        weekday: 'short', 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    // Safely truncate text
+                    const safeText = (entry.text || '').toString();
+                    const preview = safeText.length > 200 ? 
+                        safeText.substring(0, 200) + '...' : safeText;
+                    
+                    // Escape HTML to prevent XSS
+                    const escapeHtml = (text) => {
+                        const div = document.createElement('div');
+                        div.textContent = text;
+                        return div.innerHTML;
+                    };
+                    
+                    const modeEmoji = {
+                        'personal': '💭',
+                        'professional': '💼'
+                    };
+                    
+                    return `
+                        <div class="entry-item" data-entry-id="${entry.id}">
+                            <div class="entry-header">
+                                <div class="entry-date">${formattedDate}</div>
+                                <div class="entry-meta">
+                                    <span>${entry.wordCount || 0} words</span>
+                                    ${entry.mode ? `<span>${modeEmoji[entry.mode] || '💭'} ${entry.mode}</span>` : 
+                                      entry.category ? `<span>${entry.category}</span>` : '<span>personal</span>'}
+                                </div>
+                            </div>
+                            <div class="entry-prompt">${escapeHtml(entry.prompt || 'No prompt')}</div>
+                            <div class="entry-text">${escapeHtml(preview)}</div>
+                            <div class="entry-actions">
+                                <button class="btn-entry-action" onclick="copyEntry('${entry.id}')">Copy</button>
+                                <button class="btn-entry-action" onclick="downloadEntry('${entry.id}')">Download</button>
+                                <button class="btn-entry-action" onclick="deleteEntry('${entry.id}')">Delete</button>
                             </div>
                         </div>
-                        <div class="entry-prompt">${entry.prompt}</div>
-                        <div class="entry-text">${preview}</div>
-                        <div class="entry-actions">
-                            <button class="btn-entry-action" onclick="copyEntry('${entry.id}')">Copy</button>
-                            <button class="btn-entry-action" onclick="downloadEntry('${entry.id}')">Download</button>
-                            <button class="btn-entry-action" onclick="deleteEntry('${entry.id}')">Delete</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                } catch (error) {
+                    console.error('Error rendering entry:', entry.id, error);
+                    return ''; // Skip problematic entries
+                }
+            }).filter(html => html).join(''); // Filter out empty entries
             
             container.innerHTML = entriesHTML;
         }
 
+        // Performance optimization variables
+        let searchTimeout = null;
+        let lastRenderedEntries = null;
+
         function filterEntries() {
+            // Debounce search to avoid excessive filtering
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performSearch();
+            }, 300); // 300ms delay
+        }
+
+        function performSearch() {
             const searchTerm = document.getElementById('historySearch').value.toLowerCase();
             const entries = document.querySelectorAll('.entry-item');
+            let visibleCount = 0;
             
             entries.forEach(entry => {
                 const text = entry.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    entry.style.display = 'block';
-                } else {
-                    entry.style.display = 'none';
-                }
+                const isVisible = text.includes(searchTerm);
+                entry.style.display = isVisible ? 'block' : 'none';
+                if (isVisible) visibleCount++;
             });
+            
+            // Update stats to show filtered results
+            if (searchTerm) {
+                const totalEntries = entries.length;
+                document.getElementById('historyStats').textContent = 
+                    `${visibleCount} of ${totalEntries} entries shown`;
+            } else {
+                // Reset to original stats
+                const allEntries = getEntries();
+                const totalWords = allEntries.reduce((sum, entry) => sum + entry.wordCount, 0);
+                document.getElementById('historyStats').textContent = 
+                    `${allEntries.length} entries • ${totalWords} total words`;
+            }
         }
 
         function copyEntry(entryId) {
@@ -1427,33 +1591,6 @@ Exported: ${new Date().toLocaleString()}`;
 
         // EXISTING FUNCTIONS (modified to save to history)
 
-        function displayRandomPrompt() {
-            let promptArray;
-            
-            if (currentFilter === 'all') {
-                // Combine all prompts when 'all' is selected
-                promptArray = [...prompts.life, ...prompts.career];
-            } else {
-                promptArray = prompts[currentFilter];
-            }
-            
-            const randomIndex = Math.floor(Math.random() * promptArray.length);
-            document.getElementById('currentPrompt').textContent = promptArray[randomIndex];
-        }
-
-        function setPromptFilter(filter) {
-            currentFilter = filter;
-            
-            // Update button styles
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Get new prompt from selected category
-            displayRandomPrompt();
-        }
-
         function startTimer() {
             if (!isRunning) {
                 isRunning = true;
@@ -1481,10 +1618,9 @@ Exported: ${new Date().toLocaleString()}`;
         function resetTimer() {
             isRunning = false;
             clearInterval(timerInterval);
-            timeLeft = 120;
+            timeLeft = 180; // Fixed: 3 minutes, not 2
             updateTimerDisplay();
-            document.getElementById('startBtn').style.display = 'inline-block';
-            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('pauseBtn').style.visibility = 'hidden';
             document.getElementById('timerDisplay').classList.remove('timer-finished', 'pulse');
         }
 
@@ -1597,7 +1733,7 @@ startwriting.now`;
         }
 
         function newPrompt() {
-            displayRandomPrompt();
+            displaySmartPrompt();
         }
 
         function toggleDarkMode() {
@@ -1614,30 +1750,58 @@ startwriting.now`;
         }
 
         function playChime() {
-            // Create a simple chime sound using Web Audio API
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
+            try {
+                // Check if AudioContext is supported
+                if (!window.AudioContext && !window.webkitAudioContext) {
+                    console.warn('Web Audio API not supported');
+                    return;
+                }
+                
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Handle suspended context (common in modern browsers)
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume().then(() => {
+                        createChimeNotes(audioContext);
+                    }).catch(err => {
+                        console.warn('Could not resume audio context:', err);
+                    });
+                } else {
+                    createChimeNotes(audioContext);
+                }
+                
+            } catch (error) {
+                console.warn('Audio playback failed:', error);
+                // Fallback: Could add visual indication instead
+            }
+        }
+
+        function createChimeNotes(audioContext) {
             // Create three notes for a pleasant chime
             const frequencies = [523.25, 659.25, 783.99]; // C5, E5, G5
             
             frequencies.forEach((freq, index) => {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
-                oscillator.type = 'sine';
-                
-                // Set volume envelope for a soft chime
-                const startTime = audioContext.currentTime + index * 0.2;
-                gainNode.gain.setValueAtTime(0, startTime);
-                gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.1);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 1.5);
-                
-                oscillator.start(startTime);
-                oscillator.stop(startTime + 1.5);
+                try {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    oscillator.type = 'sine';
+                    
+                    // Set volume envelope for a soft chime
+                    const startTime = audioContext.currentTime + index * 0.2;
+                    gainNode.gain.setValueAtTime(0, startTime);
+                    gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.1);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 1.5);
+                    
+                    oscillator.start(startTime);
+                    oscillator.stop(startTime + 1.5);
+                } catch (noteError) {
+                    console.warn(`Failed to create note ${freq}Hz:`, noteError);
+                }
             });
         }
 
