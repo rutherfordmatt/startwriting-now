@@ -140,51 +140,77 @@
             background: #4a5568;
         }
 
-        .prompt-controls {
+        .smart-toggle-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
-            gap: 12px;
-            flex-wrap: wrap;
+            margin-bottom: 20px;
+            gap: 15px;
         }
 
-        .filter-btn, .swap-btn {
-            padding: 6px 20px;
-            border: 2px solid #667eea;
-            border-radius: 20px;
-            background: transparent;
-            color: #667eea;
-            font-size: 0.85em;
-            font-weight: 500;
+        .smart-toggle {
+            display: flex;
+            background: #e9ecef;
+            border-radius: 25px;
+            padding: 4px;
+            position: relative;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-            min-width: 70px;
-            text-align: center;
         }
 
-        .filter-btn.active {
-            background: #667eea;
-            color: white;
+        .dark-mode .smart-toggle {
+            background: #4a5568;
         }
 
-        .filter-btn:hover, .swap-btn:hover {
-            background: #667eea;
-            color: white;
+        .toggle-option {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: #666;
         }
 
-        .dark-mode .filter-btn, .dark-mode .swap-btn {
-            border-color: #a0aec0;
+        .dark-mode .toggle-option {
             color: #a0aec0;
         }
 
-        .dark-mode .filter-btn.active {
+        .toggle-option.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .dark-mode .toggle-option.active {
             background: #a0aec0;
             color: #2d3748;
         }
 
-        .dark-mode .filter-btn:hover, .dark-mode .swap-btn:hover {
+        .new-prompt-btn {
+            padding: 8px 20px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            background: transparent;
+            color: #667eea;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .new-prompt-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .dark-mode .new-prompt-btn {
+            border-color: #a0aec0;
+            color: #a0aec0;
+        }
+
+        .dark-mode .new-prompt-btn:hover {
             background: #a0aec0;
             color: #2d3748;
         }
@@ -476,6 +502,280 @@
             display: none;
         }
 
+        /* NEW STYLES FOR ENTRY HISTORY */
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            background: transparent;
+            color: #667eea;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .dark-mode .view-btn {
+            border-color: #a0aec0;
+            color: #a0aec0;
+        }
+
+        .dark-mode .view-btn.active {
+            background: #a0aec0;
+            color: #2d3748;
+        }
+
+        .dark-mode .view-btn:hover {
+            background: #a0aec0;
+            color: #2d3748;
+        }
+
+        .history-section {
+            margin-bottom: 25px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .history-search {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .history-search:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .dark-mode .history-search {
+            background: #4a5568;
+            border-color: #718096;
+            color: #e2e8f0;
+        }
+
+        .history-stats {
+            font-size: 0.9em;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .dark-mode .history-stats {
+            color: #a0aec0;
+        }
+
+        .history-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-export-all {
+            background: #fd7e14;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-export-all:hover {
+            background: #e8590c;
+            transform: translateY(-1px);
+        }
+
+        .btn-clear-history {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear-history:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .entries-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .entries-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .entries-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .entries-container::-webkit-scrollbar-thumb {
+            background: #e9ecef;
+            border-radius: 3px;
+        }
+
+        .dark-mode .entries-container::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+
+        .entry-item {
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f3f4;
+            transition: all 0.2s ease;
+        }
+
+        .entry-item:last-child {
+            border-bottom: none;
+        }
+
+        .entry-item:hover {
+            background: rgba(102, 126, 234, 0.02);
+        }
+
+        .dark-mode .entry-item {
+            border-bottom-color: #4a5568;
+        }
+
+        .dark-mode .entry-item:hover {
+            background: rgba(160, 174, 192, 0.05);
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .entry-date {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+
+        .dark-mode .entry-date {
+            color: #a0aec0;
+        }
+
+        .entry-meta {
+            font-size: 0.8em;
+            color: #6c757d;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .dark-mode .entry-meta {
+            color: #a0aec0;
+        }
+
+        .entry-prompt {
+            font-style: italic;
+            color: #8b949e;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            padding-left: 0;
+            border-left: none;
+        }
+
+        .dark-mode .entry-prompt {
+            color: #a0aec0;
+        }
+
+        .entry-text {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .dark-mode .entry-text {
+            color: #e2e8f0;
+        }
+
+        .entry-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+
+        .btn-entry-action {
+            padding: 4px 12px;
+            border: none;
+            border-radius: 12px;
+            background: #f8f9fa;
+            color: #667eea;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .btn-entry-action:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .dark-mode .btn-entry-action {
+            background: #4a5568;
+            color: #a0aec0;
+        }
+
+        .dark-mode .btn-entry-action:hover {
+            background: #a0aec0;
+            color: #2d3748;
+        }
+
+        .no-entries {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 40px 20px;
+        }
+
+        .dark-mode .no-entries {
+            color: #a0aec0;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 25px;
@@ -504,6 +804,23 @@
                 max-width: none;
                 width: 100%;
             }
+
+            .history-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .history-controls {
+                justify-content: center;
+            }
+
+            .entry-header {
+                flex-direction: column;
+            }
+
+            .entry-actions {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -516,36 +833,63 @@
             <div class="streak-display" id="streakDisplay">Start your writing streak!</div>
         </div>
 
-        <div class="prompt-section">
-            <div class="prompt-label">Random Prompt</div>
-            <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
-            <div class="prompt-controls">
-                <button class="filter-btn active" onclick="setPromptFilter('all')">All</button>
-                <button class="filter-btn" onclick="setPromptFilter('life')">Life</button>
-                <button class="filter-btn" onclick="setPromptFilter('career')">Career</button>
-                <button class="swap-btn" onclick="newPrompt()" title="Get new prompt">New</button>
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="showWriteView()">✏️ Write</button>
+            <button class="view-btn" onclick="showHistoryView()">📖 History</button>
+        </div>
+
+        <!-- WRITING VIEW (existing functionality) -->
+        <div id="writeView">
+            <div class="prompt-section">
+                <div class="smart-toggle-section">
+                    <div class="smart-toggle">
+                        <div class="toggle-option active" data-mode="personal">Personal</div>
+                        <div class="toggle-option" data-mode="professional">Professional</div>
+                    </div>
+                    <button class="new-prompt-btn" onclick="newPrompt()">New</button>
+                </div>
+                <div class="prompt-label">Smart Prompt</div>
+                <div class="prompt-text" id="currentPrompt">Loading your writing prompt...</div>
+            </div>
+
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay">3:00</div>
+                <div class="timer-controls">
+                    <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="visibility: hidden;">Pause</button>
+                </div>
+            </div>
+
+            <div class="writing-area">
+                <textarea 
+                    class="writing-textarea" 
+                    id="writingArea" 
+                    placeholder="Start writing..."
+                ></textarea>
+                <div class="word-count" id="wordCount">0 words</div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
+                <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Download Entry</button>
             </div>
         </div>
 
-        <div class="timer-section">
-            <div class="timer-display" id="timerDisplay">3:00</div>
-            <div class="timer-controls">
-                <button class="btn btn-secondary" id="pauseBtn" onclick="pauseTimer()" style="visibility: hidden;">Pause</button>
+        <!-- HISTORY VIEW (new functionality) -->
+        <div id="historyView" class="hidden">
+            <div class="history-section">
+                <div class="history-header">
+                    <input type="text" class="history-search" id="historySearch" placeholder="Search your entries..." onkeyup="filterEntries()">
+                    <div class="history-stats" id="historyStats">0 entries</div>
+                    <div class="history-controls">
+                        <button class="btn-export-all" onclick="exportAllEntries()">📥 Export All</button>
+                        <button class="btn-clear-history" onclick="clearAllHistory()">🗑️ Clear All</button>
+                    </div>
+                </div>
+                <div class="entries-container" id="entriesContainer">
+                    <div class="no-entries">No entries yet. Start writing to see your history!</div>
+                </div>
             </div>
-        </div>
-
-        <div class="writing-area">
-            <textarea 
-                class="writing-textarea" 
-                id="writingArea" 
-                placeholder="Start writing..."
-            ></textarea>
-            <div class="word-count" id="wordCount">0 words</div>
-        </div>
-
-        <div class="actions">
-            <button class="btn btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
-            <button class="btn btn-save" id="saveBtn" onclick="saveEntry()">Download Entry</button>
         </div>
 
         <!-- Hidden Netlify form for email collection -->
@@ -567,8 +911,12 @@
     </div>
 
     <script>
-        // Journaling prompts organized by category
-        const prompts = {
+        // External prompts data
+        let externalPrompts = null;
+        let promptsLoaded = false;
+
+        // Fallback prompts (embedded for offline use)
+        const fallbackPrompts = {
             life: [
                 "What's one thing that made you smile today?",
                 "Describe a moment when you felt completely at peace.",
@@ -589,37 +937,7 @@
                 "Describe a place where you feel most like yourself.",
                 "What's the best advice you've ever received?",
                 "How do you like to celebrate small victories?",
-                "What's something you're curious about right now?",
-                "Describe a time when you felt proud of yourself.",
-                "What does a meaningful day look like to you?",
-                "How do you recharge when you're feeling drained?",
-                "What's something you'd like to let go of?",
-                "What skill would you love to master?",
-                "Describe a conversation that changed your thinking.",
-                "What brings you the most energy?",
-                "What's a risk you're glad you took?",
-                "Describe your relationship with technology.",
-                "What's something you've always wanted to try?",
-                "How do you handle uncertainty?",
-                "What's your favorite way to be creative?",
-                "Describe a tradition that's meaningful to you.",
-                "What would you tell someone having a difficult day?",
-                "How has failure taught you something valuable?",
-                "What's something you do that feels authentic to who you are?",
-                "What's a belief you've outgrown?",
-                "How do you practice gratitude?",
-                "What's something you've learned from a difficult relationship?",
-                "Describe a moment when you felt truly understood.",
-                "What's your relationship with money and security?",
-                "How do you want to be remembered?",
-                "What's something you're learning to accept about yourself?",
-                "Describe a time when you surprised yourself.",
-                "What role does nature play in your life?",
-                "How do you nurture your relationships?",
-                "What's something you wish people understood about you?",
-                "What does home mean to you?",
-                "How do you define a life well-lived?",
-                "What's a fear you've overcome or are working to overcome?"
+                "What's something you're curious about right now?"
             ],
             career: [
                 "What's the most valuable skill you've developed this year?",
@@ -631,63 +949,228 @@
                 "What's a piece of feedback that changed how you work?",
                 "How do you maintain work-life balance?",
                 "What's a professional relationship that has been meaningful to you?",
-                "Describe a time when you had to step outside your comfort zone at work.",
-                "What's your biggest professional accomplishment this month?",
-                "How do you handle stress and pressure in your work?",
-                "What's a mistake you made that taught you something important?",
-                "Describe your ideal role five years from now.",
-                "What's a skill you wish you had developed earlier in your career?",
-                "How do you stay motivated when work feels challenging?",
-                "What's the best career advice you've ever received?",
-                "Describe a mentor or role model who has influenced your career.",
-                "What's something you want to improve about your communication style?",
-                "How do you approach networking and building professional relationships?",
-                "What's a professional goal you're working toward?",
-                "Describe a time when you had to advocate for yourself at work.",
-                "What's your approach to continuous learning and development?",
-                "How do you handle criticism or negative feedback?",
-                "What's something you love about your current work?",
-                "Describe a time when you had to lead or influence others.",
-                "What's a professional weakness you're working to strengthen?",
-                "How do you prioritize tasks when everything feels urgent?",
-                "What's a career pivot or change you're considering?",
-                "Describe your approach to collaboration and teamwork.",
-                "What's something you want to be known for professionally?",
-                "How do you measure your professional growth?",
-                "What's a professional boundary you've learned to set?",
-                "Describe a time when you had to make a difficult decision at work.",
-                "What's your strategy for staying organized and productive?",
-                "How do you approach giving feedback to colleagues?",
-                "What's a professional opportunity you're excited about?",
-                "Describe your ideal company culture.",
-                "What's something you want to contribute to your industry?",
-                "How do you handle imposter syndrome or self-doubt at work?",
-                "What's a professional skill you're currently developing?",
-                "Describe a time when you exceeded your own expectations.",
-                "What's your approach to managing up and working with supervisors?",
-                "How do you stay current with trends in your field?",
-                "What's a professional achievement you haven't celebrated enough?",
-                "Describe your ideal morning routine for a productive workday.",
-                "What's something you want to stop doing that doesn't serve your career?",
-                "How do you approach problem-solving in your work?",
-                "What's a professional value that guides your decisions?",
-                "Describe how you want to grow as a leader or team member."
+                "Describe a time when you had to step outside your comfort zone at work."
             ]
         };
 
-        // Current filter state
-        let currentFilter = 'all';
+        // Current state
+        let currentMode = 'personal'; // personal or professional
+        let lastUsedPrompts = [];
 
         // Timer variables
         let timeLeft = 180; // 3 minutes in seconds
         let timerInterval = null;
         let isRunning = false;
 
+        // View state
+        let currentView = 'write';
+
+        // Load external prompts with fallback
+        async function loadExternalPrompts() {
+            try {
+                const response = await fetch('./prompts.json');
+                if (response.ok) {
+                    externalPrompts = await response.json();
+                    promptsLoaded = true;
+                    console.log('External prompts loaded successfully');
+                } else {
+                    throw new Error('Failed to fetch prompts');
+                }
+            } catch (error) {
+                console.warn('Failed to load external prompts, using fallback:', error);
+                externalPrompts = { prompts: fallbackPrompts };
+                promptsLoaded = true;
+            }
+        }
+
+        // Get prompts with fallback
+        function getPrompts() {
+            return externalPrompts ? externalPrompts.prompts : fallbackPrompts;
+        }
+
+        // Get time-aware prompt category
+        function getTimeCategory() {
+            const now = new Date();
+            const hour = now.getHours();
+            const day = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            
+            // Morning/Evening
+            if (hour >= 5 && hour < 12) return 'morning';
+            if (hour >= 18 || hour < 5) return 'evening';
+            
+            // Day of week
+            if (day === 1) return 'monday'; // Monday
+            if (day === 5) return 'friday'; // Friday
+            if (day === 0 || day === 6) return 'weekend'; // Weekend
+            
+            return null;
+        }
+
+        // Get seasonal prompts
+        function getSeasonalPrompts() {
+            const prompts = getPrompts();
+            if (prompts.seasonal && prompts.seasonal.current) {
+                return prompts.seasonal[prompts.seasonal.current] || [];
+            }
+            return [];
+        }
+
+        // Avoid recently used prompts
+        function filterRecentPrompts(promptArray) {
+            if (lastUsedPrompts.length === 0) return promptArray;
+            
+            const filtered = promptArray.filter(prompt => !lastUsedPrompts.includes(prompt));
+            return filtered.length > 0 ? filtered : promptArray;
+        }
+
+        // Track used prompts
+        function trackUsedPrompt(prompt) {
+            lastUsedPrompts.unshift(prompt);
+            // Keep only last 10 prompts to avoid
+            if (lastUsedPrompts.length > 10) {
+                lastUsedPrompts = lastUsedPrompts.slice(0, 10);
+            }
+            localStorage.setItem('recentPrompts', JSON.stringify(lastUsedPrompts));
+        }
+
+        // Load recent prompts from storage
+        function loadRecentPrompts() {
+            const stored = localStorage.getItem('recentPrompts');
+            if (stored) {
+                lastUsedPrompts = JSON.parse(stored);
+            }
+        }
+
+        // Set mode (personal/professional)
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update UI
+            document.querySelectorAll('.toggle-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+            
+            // Get new smart prompt
+            displaySmartPrompt();
+        }
+
+        // Ultra-smart prompt selection
+        function displaySmartPrompt() {
+            if (!promptsLoaded) {
+                document.getElementById('currentPrompt').textContent = 'Loading prompts...';
+                return;
+            }
+
+            const prompts = getPrompts();
+            let promptArray = [];
+            
+            // Step 1: Get base prompts based on mode
+            if (currentMode === 'professional') {
+                promptArray = [...(prompts.career || fallbackPrompts.career)];
+            } else {
+                promptArray = [...(prompts.life || fallbackPrompts.life)];
+            }
+
+            // Step 2: Add time-aware intelligence
+            const timeCategory = getTimeCategory();
+            if (timeCategory && prompts.timeAware && prompts.timeAware[timeCategory]) {
+                // Mix in 30% time-relevant prompts
+                const timePrompts = prompts.timeAware[timeCategory];
+                const mixCount = Math.floor(timePrompts.length * 0.3);
+                promptArray = [...promptArray, ...timePrompts.slice(0, mixCount)];
+            }
+
+            // Step 3: Add mood-aware intelligence based on time and mode
+            const currentHour = new Date().getHours();
+            let smartMoodPrompts = [];
+            
+            if (currentMode === 'personal') {
+                if (currentHour >= 18 || currentHour < 6) {
+                    // Evening/night - reflective and grateful prompts
+                    smartMoodPrompts = [
+                        ...(prompts.moods?.reflective || []).slice(0, 3),
+                        ...(prompts.moods?.grateful || []).slice(0, 3)
+                    ];
+                } else if (currentHour >= 6 && currentHour < 12) {
+                    // Morning - energized and creative prompts
+                    smartMoodPrompts = [
+                        ...(prompts.moods?.energized || []).slice(0, 3),
+                        ...(prompts.moods?.creative || []).slice(0, 2)
+                    ];
+                } else {
+                    // Afternoon - mix of reflective and creative
+                    smartMoodPrompts = [
+                        ...(prompts.moods?.reflective || []).slice(0, 2),
+                        ...(prompts.moods?.creative || []).slice(0, 2)
+                    ];
+                }
+            } else {
+                // Professional mode - always energized and focused
+                smartMoodPrompts = [
+                    ...(prompts.moods?.energized || []).slice(0, 3)
+                ];
+                
+                // Add struggling support prompts on Mondays
+                const today = new Date().getDay();
+                if (today === 1) { // Monday
+                    smartMoodPrompts = [
+                        ...smartMoodPrompts,
+                        ...(prompts.moods?.struggling || []).slice(0, 2)
+                    ];
+                }
+            }
+            
+            promptArray = [...promptArray, ...smartMoodPrompts];
+
+            // Step 4: Add seasonal intelligence
+            const seasonalPrompts = getSeasonalPrompts();
+            if (seasonalPrompts.length > 0) {
+                promptArray = [...promptArray, ...seasonalPrompts.slice(0, 3)];
+            }
+
+            // Step 5: Filter out recently used prompts
+            promptArray = filterRecentPrompts(promptArray);
+
+            // Step 6: Final fallback
+            if (promptArray.length === 0) {
+                promptArray = currentMode === 'professional' ? 
+                    fallbackPrompts.career : fallbackPrompts.life;
+            }
+
+            // Select and display prompt
+            const randomIndex = Math.floor(Math.random() * promptArray.length);
+            const selectedPrompt = promptArray[randomIndex];
+            
+            document.getElementById('currentPrompt').textContent = selectedPrompt;
+            trackUsedPrompt(selectedPrompt);
+        }
+
+        // Initialize smart toggle
+        function initSmartToggle() {
+            document.querySelectorAll('.toggle-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const mode = this.getAttribute('data-mode');
+                    setMode(mode);
+                });
+            });
+            
+            // Set personal as default
+            setMode('personal');
+        }
+
         // Initialize the app
-        function initApp() {
-            displayRandomPrompt();
+        async function initApp() {
+            // Load external prompts first
+            await loadExternalPrompts();
+            loadRecentPrompts();
+            
+            // Initialize UI
+            initSmartToggle();
+            displaySmartPrompt();
             updateWordCount();
             updateStreakDisplay();
+            updateHistoryDisplay();
             
             // Set dark mode as default, but respect user preference if they've toggled before
             const savedDarkMode = localStorage.getItem('darkMode');
@@ -710,6 +1193,239 @@
                 }
             });
         }
+
+        // NEW ENTRY HISTORY FUNCTIONS
+        
+        function getEntries() {
+            const entries = localStorage.getItem('writingEntries');
+            return entries ? JSON.parse(entries) : [];
+        }
+
+        function saveEntryToHistory(prompt, text, wordCount) {
+            const entries = getEntries();
+            const entry = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                prompt: prompt,
+                text: text,
+                wordCount: wordCount,
+                mode: currentMode
+            };
+            
+            entries.unshift(entry); // Add to beginning of array
+            localStorage.setItem('writingEntries', JSON.stringify(entries));
+            updateHistoryDisplay();
+        }
+
+        function showWriteView() {
+            currentView = 'write';
+            document.getElementById('writeView').classList.remove('hidden');
+            document.getElementById('historyView').classList.add('hidden');
+            
+            // Update view buttons
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.view-btn').classList.add('active');
+        }
+
+        function showHistoryView() {
+            currentView = 'history';
+            document.getElementById('writeView').classList.add('hidden');
+            document.getElementById('historyView').classList.remove('hidden');
+            
+            // Update view buttons
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view-btn')[1].classList.add('active');
+            
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const entries = getEntries();
+            const container = document.getElementById('entriesContainer');
+            const stats = document.getElementById('historyStats');
+            
+            // Update stats
+            const totalWords = entries.reduce((sum, entry) => sum + entry.wordCount, 0);
+            stats.textContent = `${entries.length} entries • ${totalWords} total words`;
+            
+            if (entries.length === 0) {
+                container.innerHTML = '<div class="no-entries">No entries yet. Start writing to see your history!</div>';
+                return;
+            }
+
+            // Generate entries HTML
+            const entriesHTML = entries.map(entry => {
+                const date = new Date(entry.date);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const preview = entry.text.length > 200 ? 
+                    entry.text.substring(0, 200) + '...' : entry.text;
+                
+                const modeEmoji = {
+                    'personal': '💭',
+                    'professional': '💼'
+                };
+                
+                return `
+                    <div class="entry-item" data-entry-id="${entry.id}">
+                        <div class="entry-header">
+                            <div class="entry-date">${formattedDate}</div>
+                            <div class="entry-meta">
+                                <span>${entry.wordCount} words</span>
+                                ${entry.mode ? `<span>${modeEmoji[entry.mode] || '💭'} ${entry.mode}</span>` : 
+                                  entry.category ? `<span>${entry.category}</span>` : '<span>personal</span>'}
+                            </div>
+                        </div>
+                        <div class="entry-prompt">${entry.prompt}</div>
+                        <div class="entry-text">${preview}</div>
+                        <div class="entry-actions">
+                            <button class="btn-entry-action" onclick="copyEntry('${entry.id}')">Copy</button>
+                            <button class="btn-entry-action" onclick="downloadEntry('${entry.id}')">Download</button>
+                            <button class="btn-entry-action" onclick="deleteEntry('${entry.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = entriesHTML;
+        }
+
+        function filterEntries() {
+            const searchTerm = document.getElementById('historySearch').value.toLowerCase();
+            const entries = document.querySelectorAll('.entry-item');
+            
+            entries.forEach(entry => {
+                const text = entry.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    entry.style.display = 'block';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        }
+
+        function copyEntry(entryId) {
+            const entries = getEntries();
+            const entry = entries.find(e => e.id == entryId);
+            if (!entry) return;
+            
+            const timestamp = new Date(entry.date).toLocaleString();
+            const formattedEntry = `Start Writing Now - Journal Entry
+Date: ${timestamp}
+Prompt: ${entry.prompt}
+
+${entry.text}
+
+---
+startwriting.now`;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(formattedEntry).then(() => {
+                    alert('Entry copied to clipboard! 📋');
+                });
+            } else {
+                fallbackCopyToClipboard(formattedEntry, entry.wordCount);
+            }
+        }
+
+        function downloadEntry(entryId) {
+            const entries = getEntries();
+            const entry = entries.find(e => e.id == entryId);
+            if (!entry) return;
+            
+            const timestamp = new Date(entry.date).toLocaleString();
+            const formattedEntry = `Start Writing Now - Journal Entry
+Date: ${timestamp}
+Prompt: ${entry.prompt}
+
+${entry.text}
+
+---
+startwriting.now
+`;
+            
+            const blob = new Blob([formattedEntry], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `journal-entry-${new Date(entry.date).toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function deleteEntry(entryId) {
+            if (!confirm('Are you sure you want to delete this entry? This cannot be undone.')) {
+                return;
+            }
+            
+            const entries = getEntries();
+            const filteredEntries = entries.filter(e => e.id != entryId);
+            localStorage.setItem('writingEntries', JSON.stringify(filteredEntries));
+            updateHistoryDisplay();
+        }
+
+        function exportAllEntries() {
+            const entries = getEntries();
+            if (entries.length === 0) {
+                alert('No entries to export!');
+                return;
+            }
+            
+            const allEntries = entries.map(entry => {
+                const timestamp = new Date(entry.date).toLocaleString();
+                return `Start Writing Now - Journal Entry
+Date: ${timestamp}
+Prompt: ${entry.prompt}
+
+${entry.text}
+
+---`;
+            }).join('\n\n');
+            
+            const finalContent = `${allEntries}
+
+Complete Journal Export from startwriting.now
+Total Entries: ${entries.length}
+Total Words: ${entries.reduce((sum, entry) => sum + entry.wordCount, 0)}
+Exported: ${new Date().toLocaleString()}`;
+            
+            const blob = new Blob([finalContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `all-journal-entries-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert(`Exported ${entries.length} entries! 📥`);
+        }
+
+        function clearAllHistory() {
+            if (!confirm('Are you sure you want to delete ALL entries? This cannot be undone.')) {
+                return;
+            }
+            
+            if (!confirm('This will permanently delete all your writing history. Are you absolutely sure?')) {
+                return;
+            }
+            
+            localStorage.removeItem('writingEntries');
+            updateHistoryDisplay();
+            alert('All entries have been deleted.');
+        }
+
+        // EXISTING FUNCTIONS (modified to save to history)
 
         function displayRandomPrompt() {
             let promptArray;
@@ -815,6 +1531,8 @@
             const words = entry.trim().split(/\s+/).filter(word => word.length > 0);
             if (words.length >= 25) {
                 updateStreak();
+                // Save to history
+                saveEntryToHistory(prompt, entry, words.length);
             }
             
             // Create formatted text for clipboard
@@ -936,6 +1654,8 @@ startwriting.now`;
             const words = entry.trim().split(/\s+/).filter(word => word.length > 0);
             if (words.length >= 25) {
                 updateStreak();
+                // Save to history
+                saveEntryToHistory(prompt, entry, words.length);
             }
             
             // Create formatted text for download
@@ -975,17 +1695,25 @@ startwriting.now
         function showAbout() {
             alert(`About Start Writing
 
-This is a simple micro-journaling app designed to help you capture your thoughts quickly and easily.
+This is an intelligent micro-journaling app designed to help you capture your thoughts with the perfect prompts.
 
 How it works:
-• Get a random writing prompt
+• Choose Personal or Professional writing mode
+• Get smart prompts that adapt to time of day and season
 • Start typing to begin the 3-minute timer
 • Write freely without worrying about structure
-• Copy or download your entry when done
+• Your entries are automatically saved to your history
 
-The goal is to make writing a daily habit through short, focused sessions. No accounts needed - just write and save locally.
+Smart Features:
+• Time-aware prompts (different for morning vs evening)
+• Intelligent prompt selection that avoids recent duplicates
+• Seasonal and contextual awareness
+• Full writing history with search and export
+• Works completely offline
 
-Perfect for daily reflection, gratitude practice, or creative expression.`);
+The goal is to make writing a daily habit through short, focused sessions with perfectly matched prompts. No accounts needed - everything saves locally in your browser.
+
+Perfect for daily reflection, gratitude practice, career planning, or creative expression.`);
         }
         function getStreakData() {
             const defaultData = {
