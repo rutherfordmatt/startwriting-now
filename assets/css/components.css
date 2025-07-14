@@ -352,9 +352,11 @@
     background: #138496;
 }
 
-/* History Components */
+/* History Components - CORRECTED */
 .history-section {
     margin-bottom: 25px;
+    position: relative;
+    height: 100%;
 }
 
 .history-header {
@@ -364,6 +366,8 @@
     margin-bottom: 20px;
     flex-wrap: wrap;
     gap: 15px;
+    position: relative;
+    z-index: 10;
 }
 
 .history-search {
@@ -385,6 +389,7 @@
     font-size: 0.9em;
     color: #6c757d;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .history-controls {
@@ -428,15 +433,11 @@
 }
 
 .entries-container {
-    max-height: 500px;
+    max-height: 400px;
     overflow-y: auto;
     padding: 0;
-    position: absolute;
-    top: 75px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 1px solid transparent;
+    position: relative;
+    border: none;
 }
 
 .entries-container::-webkit-scrollbar {
@@ -502,6 +503,7 @@
     color: #333;
     line-height: 1.6;
     margin-bottom: 10px;
+    word-wrap: break-word;
 }
 
 .entry-actions {
@@ -614,13 +616,31 @@
     }
 
     .history-header {
-        height: 80px;
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
+    }
+
+    .history-controls {
+        justify-content: center;
     }
 
     .entries-container {
-        top: 95px;
+        max-height: 300px;
+    }
+
+    .entry-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .entry-meta {
+        justify-content: flex-start;
+    }
+
+    .entry-actions {
+        justify-content: center;
+        gap: 10px;
     }
 
     .prompt-text {
