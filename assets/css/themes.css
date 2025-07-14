@@ -1,0 +1,209 @@
+/* Start Writing Now - Theme Styles */
+/* Dark mode and theme-specific styling */
+
+/* Dark Mode Base */
+body.dark-mode {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+.dark-mode .container {
+    background: #2d3748;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* Dark Mode Header */
+.dark-mode .logo {
+    color: #e2e8f0;
+}
+
+.dark-mode .streak-display {
+    color: #a0aec0;
+}
+
+.dark-mode .about-link {
+    color: #a0aec0;
+}
+
+.dark-mode .about-link:hover {
+    color: #e2e8f0;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode .dark-mode-toggle {
+    border-color: #a0aec0;
+    color: #a0aec0;
+}
+
+.dark-mode .dark-mode-toggle:hover {
+    background: #a0aec0;
+    color: #2d3748;
+}
+
+/* Dark Mode View Toggle */
+.dark-mode .view-btn {
+    border-color: #a0aec0;
+    color: #a0aec0;
+}
+
+.dark-mode .view-btn.active {
+    background: #a0aec0;
+    color: #2d3748;
+}
+
+.dark-mode .view-btn:hover {
+    background: #a0aec0;
+    color: #2d3748;
+}
+
+/* Dark Mode Prompt Section */
+.dark-mode .prompt-section {
+    background: #4a5568;
+}
+
+.dark-mode .smart-toggle {
+    background: #4a5568;
+}
+
+.dark-mode .toggle-option {
+    color: #a0aec0;
+}
+
+.dark-mode .toggle-option.active {
+    background: #a0aec0;
+    color: #2d3748;
+}
+
+.dark-mode .new-prompt-btn {
+    border-color: #a0aec0;
+    color: #a0aec0;
+}
+
+.dark-mode .new-prompt-btn:hover {
+    background: #a0aec0;
+    color: #2d3748;
+}
+
+.dark-mode .new-prompt-btn:focus,
+.dark-mode .new-prompt-btn:active,
+.dark-mode .new-prompt-btn:visited {
+    outline: 0 !important;
+    box-shadow: none !important;
+    border: 2px solid #a0aec0 !important;
+}
+
+.dark-mode .prompt-label {
+    color: #a0aec0;
+}
+
+.dark-mode .prompt-text {
+    color: #e2e8f0;
+}
+
+/* Dark Mode Writing Area */
+.dark-mode .writing-textarea {
+    background: #4a5568;
+    border-color: #718096;
+    color: #e2e8f0;
+}
+
+.dark-mode .writing-textarea::placeholder {
+    color: #a0aec0;
+}
+
+.dark-mode .word-count {
+    color: #a0aec0;
+}
+
+/* Dark Mode History Components */
+.dark-mode .history-search {
+    background: #4a5568;
+    border-color: #718096;
+    color: #e2e8f0;
+}
+
+.dark-mode .history-stats {
+    color: #a0aec0;
+}
+
+.dark-mode .entries-container::-webkit-scrollbar-thumb {
+    background: #4a5568;
+}
+
+.dark-mode .entry-item {
+    border-bottom-color: #4a5568;
+}
+
+.dark-mode .entry-item:hover {
+    background: rgba(160, 174, 192, 0.05);
+}
+
+.dark-mode .entry-date {
+    color: #a0aec0;
+}
+
+.dark-mode .entry-meta {
+    color: #a0aec0;
+}
+
+.dark-mode .entry-prompt {
+    color: #a0aec0;
+}
+
+.dark-mode .entry-text {
+    color: #e2e8f0;
+}
+
+.dark-mode .btn-entry-action {
+    background: #4a5568;
+    color: #a0aec0;
+}
+
+.dark-mode .btn-entry-action:hover {
+    background: #a0aec0;
+    color: #2d3748;
+}
+
+.dark-mode .no-entries {
+    color: #a0aec0;
+}
+
+/* Dark Mode Footer */
+.dark-mode .footer {
+    border-top-color: #4a5568;
+}
+
+.dark-mode .footer-link {
+    color: #a0aec0;
+}
+
+.dark-mode .footer-link:hover {
+    color: #e2e8f0;
+}
+
+/* Theme Transition Effects */
+body,
+.container,
+.prompt-section,
+.writing-textarea,
+.logo,
+.streak-display,
+.about-link,
+.prompt-label,
+.prompt-text,
+.word-count,
+.footer,
+.footer-link,
+.dark-mode-toggle,
+.view-btn,
+.toggle-option,
+.new-prompt-btn,
+.history-search,
+.history-stats,
+.entry-date,
+.entry-meta,
+.entry-prompt,
+.entry-text,
+.btn-entry-action,
+.no-entries {
+    transition: all 0.3s ease;
+}
